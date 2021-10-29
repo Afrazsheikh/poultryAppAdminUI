@@ -44,6 +44,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
   imports: [
@@ -63,7 +64,7 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
     TabsModule.forRoot(),
     ChartsModule,
     IconModule,
-    IconSetModule.forRoot(),
+    IconSetModule.forRoot()
   ],
   declarations: [
     AppComponent,
