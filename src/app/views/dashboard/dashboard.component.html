@@ -1,0 +1,71 @@
+<div class="app-body">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="card bg-primary">
+          <div class="card-body text-center">
+            <h1 class="card-text">{{countOpen}}</h1>
+            <p class="card-text">Total Restaurants Opened</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-primary">
+          <div class="card-body text-center">
+            <h1 class="card-text">{{countClosed}}</h1>
+            <p class="card-text">Total Restaurants Closed</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-primary res-card" routerLink="base/password"> 
+          <div class="card-body text-center">
+            <h1 class="card-text"><i class="fa fa-key"></i></h1>
+            <p class="card-text">Reset Password</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-primary res-card"  routerLink="base/register">
+          <div class="card-body text-center">
+            <h1 class="card-text"><i class="fa fa-home"></i></h1>
+            <p class="card-text">Add New Restaurant</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr class="table-success">
+              <th>ID</th>
+              <th>Name</th>
+              <th>Status</th>
+              <th>Today Accepted Order</th>
+              <th>Today Sale</th>
+              <th>URL</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-light table-row-hover" (click)="navToGraph(i)" *ngFor="let rest of restaurants; index as i">
+              <td>{{rest._id}}</td>
+              <td>{{rest.restaurantName}}</td>
+              <td>{{rest.isOnline ? 'Open Today' : 'Closed'}}</td>
+              <td>0</td>
+              <td>0</td>
+              <td>{{rest.websiteURL}}</td>
+              <td class="text-center"><a href="" style="text-decoration: none; color: tomato;">
+                <i class="fa fa-edit" style="font-size: 16pt;"></i>
+              </a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+

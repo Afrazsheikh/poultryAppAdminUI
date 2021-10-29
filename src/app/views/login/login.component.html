@@ -1,0 +1,54 @@
+<div class="app-body">
+  <main class="main d-flex align-items-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <div class="card-group">
+            <div class="card p-4">
+              <div class="card-body">
+                  <h1>Admin Login</h1>
+
+                  <div class="alert alert-danger alert-dismissible" *ngIf="errorMsg">
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                    Invalid Username or Password.
+                  </div>
+                  <form [formGroup]="loginForm" (ngSubmit)="login()">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-user"></i></span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Username" formControlName="email" autofocus="true">
+                  </div>
+                  <div *ngIf="(loginForm.get('email').touched || loginForm.get('email').dirty) && !loginForm.get('email').valid"
+                    class="errorMsg" style="margin: -15px 0 5px 0">
+                      Enter Email.
+                  </div>
+                  <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-lock"></i></span>
+                    </div>
+                    <input type="password" class="form-control" placeholder="Password" formControlName="password">
+                  </div>
+                  <div *ngIf="(loginForm.get('password').touched || loginForm.get('password').dirty) && !loginForm.get('password').valid"
+                    class="errorMsg" style="margin: -15px 0 5px 0">
+                      Enter Password.
+                  </div>
+                  <div class="row">
+                    <div class="col-12 text-center">
+                      <button [disabled]="!isWaiting" type="submit" class="btn btn-primary px-4">
+                        <span *ngIf="isWaiting; else loader">Login</span>
+                        <ng-template #loader>
+                          <span class="spinner-border spinner-border-sm"></span>
+                        </ng-template>
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>

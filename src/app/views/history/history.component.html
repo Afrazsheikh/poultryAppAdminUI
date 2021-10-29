@@ -1,0 +1,51 @@
+<div class="app-body">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12 text-center pb-5">
+        <div>
+          <h4>Filter By</h4>
+        </div>
+        <div>
+          <mat-button-toggle-group name="fontStyle" aria-label="Font Style" (change)="setFilter($event)">
+            <mat-button-toggle value="dates" [checked]="true">Dates</mat-button-toggle>
+            <mat-button-toggle value="months">Months</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="chart-wrapper">
+          <canvas baseChart class="chart"
+            [datasets]="totalOrders"
+            [labels]="lineChartLabels"
+            [colors]="chartColors"
+            [options]="config"
+            [chartType]="lineChartType"></canvas>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="chart-wrapper">
+          <canvas baseChart class="chart"
+            [datasets]="totalSales"
+            [labels]="lineChartLabels"
+            [legend]="true"
+            [colors]="chartColors"
+            [chartType]="lineChartType"></canvas>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="chart-wrapper">
+          <canvas baseChart class="chart"
+            [datasets]="totalDecline"
+            [labels]="lineChartLabels"
+            [colors]="chartColors"
+            [chartType]="lineChartType"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
