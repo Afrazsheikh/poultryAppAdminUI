@@ -20,7 +20,7 @@
   "scripts": {
     "ng": "ng",
     "postinstall": "ngcc --properties es2015 browser module main --first-only",
-    "start": "ng serve",
+    "start": "nodemon server.js",
     "build": "ng build --prod --output-hashing=all",
     "test": "ng test",
     "lint": "ng lint",
@@ -52,6 +52,7 @@
     "flag-icon-css": "^3.5.0",
     "font-awesome": "^4.7.0",
     "material-icons": "^1.6.1",
+	"express": "^4.17.1",
     "moment": "^2.29.1",
     "ng2-charts": "^2.4.2",
     "ngx-bootstrap": "^6.2.0",
