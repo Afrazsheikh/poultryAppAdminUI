@@ -6,10 +6,7 @@ import { HistoryComponent } from './history.component';
 const routes: Routes = [
   {
     path: '',
-    component: HistoryComponent,
-    data: {
-      title: 'Orders and History'
-    }
+    component: HistoryComponent
   }
 ];
 

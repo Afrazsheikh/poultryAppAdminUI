@@ -54,6 +54,10 @@ export const routes: Routes = [
         path: 'history',
         loadChildren: () => import('./views/history/history.module').then(m => m.HistoryModule)
       },
+      {
+        path: 'menus',
+        loadChildren: () => import('./views/menus/menu.module').then(m => m.MenuModule)
+      },
 
     ]
   },

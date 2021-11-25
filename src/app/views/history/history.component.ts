@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RestaurantService } from '../../services/restaurant.service';
 import * as moment from 'moment';
-
 @Component({
   selector: 'app-history',
   templateUrl: './history.component.html',
@@ -13,17 +12,26 @@ export class HistoryComponent implements OnInit {
   restId: any;
   months: any;
   weekDays: Array<any> = [];
+  datesData: Array<any> = [];
+
+  totalOrderMonths: any[] = [];
+  totalSalesMonths: any[] = [];
+  totalDeclineMonths: any[] = [];
+
+  totalOrderDays: any[] = [];
+  totalSalesDays: any[] = [];
+  totalDeclineDays: any[] = [];
 
   totalOrders: Array<any> = [
-    {data: [0, 0, 0, 0, 0, 0, 0, 0], label: 'Total Orders'}
+    {data: [], label: 'Total Orders'}
   ];
 
   totalSales: Array<any> = [
-    {data: [65, 59, 80, 81, 56, 55, 40, 10], label: 'Total Sales'}
+    {data: [], label: 'Total Sales'}
   ];
 
   totalDecline: Array<any> = [
-    {data: [65, 59, 80, 81, 56, 55, 40, 10], label: 'Declined Orders'}
+    {data: [], label: 'Declined Orders'}
   ];
 
   lineChartLabels: Array<any>;
@@ -39,7 +47,13 @@ export class HistoryComponent implements OnInit {
     scales: {
       yAxes: [{
         ticks: {
-          beginAtZero: true
+          beginAtZero: true,
+        }
+      }],
+      xAxes: [{
+        ticks: {
+          autoSkip: false,
+          minRotation: 70
         }
       }]
     }
@@ -48,6 +62,30 @@ export class HistoryComponent implements OnInit {
   chartColors = [
     {
         backgroundColor: [
+        "rgb(255, 99, 132)",
+        "rgb(54, 162, 235)",
+        "rgb(255, 206, 86)",
+        "rgb(34, 16, 230)",
+        "rgb(166, 75, 5)",
+        "rgb(130, 4, 44)",
+        "rgb(255, 99, 132)",
+        "rgb(54, 162, 235)",
+        "rgb(255, 206, 86)",
+        "rgb(34, 16, 230)",
+        "rgb(166, 75, 5)",
+        "rgb(130, 4, 44)",
+        "rgb(255, 99, 132)",
+        "rgb(54, 162, 235)",
+        "rgb(255, 206, 86)",
+        "rgb(34, 16, 230)",
+        "rgb(166, 75, 5)",
+        "rgb(130, 4, 44)",
+        "rgb(255, 99, 132)",
+        "rgb(54, 162, 235)",
+        "rgb(255, 206, 86)",
+        "rgb(34, 16, 230)",
+        "rgb(166, 75, 5)",
+        "rgb(130, 4, 44)",
         "rgb(255, 99, 132)",
         "rgb(54, 162, 235)",
         "rgb(255, 206, 86)",
@@ -68,15 +106,17 @@ export class HistoryComponent implements OnInit {
   {
     this.restId = localStorage.getItem('restId');
 
-    let begDay = moment().startOf('week');
-    let endDay = moment().endOf('week');
+    let begDay = moment().startOf('month');
+    let endDay = moment().endOf('month');
 
     console.log(begDay.toString());
     console.log(endDay.toString());
 
-    for(let i = 0; i < 7; i++)
+
+    for(let i = 0; i < 30; i++)
     {
-      this.weekDays.push(moment(begDay).add(i, 'days').format('DD-MMM-YYYY'));
+      this.weekDays.push(moment(begDay).add(i, 'days').format('DD'));
+      //this.datesData.push(i + 1);
     }
 
     console.log(this.weekDays);
@@ -84,21 +124,66 @@ export class HistoryComponent implements OnInit {
     this.months = moment.monthsShort();
 
     this.lineChartLabels = this.weekDays;
+    // this.totalOrders[0].data = this.datesData;
+    // this.totalDecline
 
     console.log(this.restId);
 
+    this.lineChartLabels = this.months;
     resturantService.getOrderGraphs(this.restId).subscribe(response => {
 
       console.log(response);
-      this.totalOrders[0].data.length = 0;
-      response.graphData.forEach(month => {
-        this.totalOrders[0].data.push(month.totalOrders);
+
+      response.graphData.totalAccepted.forEach(month => {
+        this.totalOrderMonths.push(month.totalOrders);
       });
 
+      response.graphData.totalSales.forEach(month => {
+        this.totalSalesMonths.push(month.totalSales);
+      });
+
+      response.graphData.totalDenied.forEach(month => {
+        this.totalDeclineMonths.push(month.totalOrders);
+      });
+
+      this.totalOrders[0].data = this.totalOrderMonths; 
+      this.totalSales[0].data = this.totalSalesMonths;
+      this.totalDecline[0].data = this.totalDeclineMonths;
+
+      console.log(this.totalOrderMonths);
+
+      console.log(this.totalOrders);
+
     },
+
     err => {
       console.log(err);
     })
+
+
+    resturantService.getDaysGraphs(this.restId).subscribe(response => {
+
+      console.log(response);
+
+      response.graphData.totalAccepted.forEach(day => {
+        this.totalOrderDays.push(day.totalOrders);
+      });
+
+      response.graphData.totalSales.forEach(day => {
+        this.totalSalesDays.push(day.totalSales);
+      });
+
+      response.graphData.totalDenied.forEach(day => {
+        this.totalDeclineDays.push(day.totalOrders);
+      });
+
+    },
+
+    err => {
+      console.log(err);
+    })
+
+
     /*
     route.queryParams.subscribe(params => {
       if(router.getCurrentNavigation().extras.state) {
@@ -116,10 +201,18 @@ export class HistoryComponent implements OnInit {
     if(event.value == 'dates')
     {
       this.lineChartLabels = this.weekDays;
+
+      this.totalOrders[0].data = this.totalOrderDays; 
+      this.totalSales[0].data = this.totalSalesDays;
+      this.totalDecline[0].data = this.totalDeclineDays;
     }
     else if(event.value == 'months')
     {
       this.lineChartLabels = this.months;
+
+      this.totalOrders[0].data = this.totalOrderMonths; 
+      this.totalSales[0].data = this.totalSalesMonths;
+      this.totalDecline[0].data = this.totalDeclineMonths;
     }
   }
 }

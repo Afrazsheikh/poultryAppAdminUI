@@ -1,0 +1,717 @@
+<div class="app-body">
+    <div class="container" >
+        <div class="row">
+            <div class="col-3 text-right" data-toggle="modal" data-target="#addItem">
+                <div class="card bg-primary res-card">
+                  <div class="card-body text-center">
+                    <h1 class="card-text"> </h1>
+                    <p class="card-text">Add New Item</p>
+                  </div>
+                </div>
+              </div>
+        </div>
+
+      <div class="row">
+
+        <div class="col-md-3" data-toggle="modal" data-target="#addNewCategory">
+            <div class="card bg-primary res-card">
+            <div class="card-body text-center">
+              <h1 class="card-text"> </h1>
+              <p class="card-text">Add New Categories</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3" data-toggle="modal" data-target="#addOption">
+            <div class="card bg-primary res-card">
+            <div class="card-body text-center">
+              <h1 class="card-text"> </h1>
+              <p class="card-text">Add Option</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3" data-toggle="modal" data-target="#addToppings">
+          <div class="card bg-primary res-card">
+            <div class="card-body text-center">
+              <h1 class="card-text"></h1>
+              <p class="card-text">Add Toppings</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3" data-toggle="modal" data-target="#CreateToppingGroups">
+          <div class="card bg-primary res-card">
+            <div class="card-body text-center">
+              <h1 class="card-text"></h1>
+              <p class="card-text">Create Toppings Groups</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    <div  class="row">
+
+    </div>
+
+    <div class="row">
+        <div *ngIf="isLoading" class="col text-center">
+            <div class="spinner-border text-danger" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+        <div *ngIf="!isLoading" class="col">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr class="table-success">
+                <th>S.No</th>
+                <th>Item Name</th>
+                <th>Categories</th>
+                <th>Options</th>
+                <th>Toppings Groups</th>
+                <th>Price</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="table-light table-row-hover" *ngFor="let item of items; index as i">
+                <td>{{i+1}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.category.name}}</td>
+                <td>{{(item.options.length != 0) ? item.options : 'None'}}</td>
+                <td>{{(item.toppingGroups.name) ? item.toppingGroups.name : 'None' }}</td>
+                <td style="color: tomato;">£ {{item.price}}</td>
+                <td class="text-center"><a style="text-decoration: none; color: tomato;">
+                  <i class="fa fa-edit" style="font-size: 16pt;" data-toggle="modal" data-target="#editItem" (click)="editItemList(i)"></i>
+                </a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!--Model For add new Item-->
+  <div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="addItem">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New item</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+
+            <form [formGroup]="addingItem">
+                <div class="form-group">
+                  <label for="Entering New item">Enter New Item</label>
+                  <input type="text" class="form-control" formControlName="name" placeholder="Enter Item Name">
+                </div>
+                <div class="form-group">
+                  <label for="Select category">Select category</label>
+                  <input id="newItemCat" readonly type="text" class="form-control" (click)="getCategories()"
+                  data-toggle="modal" data-target="#getCategories" placeholder="Select category">
+                </div>
+                <div class="form-group">
+                    <label for="Select Topping Group">Select Topping Group</label>
+                    <input id="newItemTopp" readonly type="text" class="form-control" (click)="getToppingGroup()"
+                    data-toggle="modal" data-target="#getToppingGroup" placeholder="Select Topping Group">
+                </div>
+                <div class="form-group">
+                    <label for="Add Description">Add Description</label>
+                    <input type="text" class="form-control" formControlName="description" placeholder="Description">
+                </div>
+
+                <div class="form-group">
+                    <label for="Select Option">Select Option</label>
+                    <div class="input-group">
+                        <input id="newItemOption" readonly type="text" class="form-control" (click)="getOption()"
+                        data-toggle="modal" data-target="#getOption" placeholder="Select Option">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="fas fa-pound-sign"></i></span>
+                        </div>
+                        <input type="number" class="form-control" formControlName="price" placeholder="0.00">
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <div class="col">
+                    <button type="button" class="btn btn-danger"
+
+                    (click)="addItem()">Add</button>
+                </div>
+                <div class="col">
+                    <button id="addItemClose" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Model For add new category-->
+  <div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="addNewCategory">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form [formGroup]="addingCategory" >
+        <div class="modal-header">
+          <h5 class="modal-title">Add New category</h5>
+          <button type="button" class="btn btn-danger"(click)="getCategories()"
+          data-toggle="modal" data-target="#myCategory" >See All category
+          </button>
+        </div>
+        <div class="modal-body">
+
+
+            <div class="form-group">
+              <label for="Entering New category">Enter New category</label>
+              <input type="text" class="form-control" formControlName="name" placeholder="Enter New category Name">
+            </div>
+            <div class="form-group">
+              <label for="Add Description">Add Description</label>
+              <input type="text" class="form-control" formControlName="description" placeholder="Add Description">
+            </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger"
+          [disabled]="!addingCategory.get('name').valid"
+          (click)="addCategory()">Add</button>
+          <button id="addCategoryClose" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!--Model For add Option-->
+  <div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="addOption">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form [formGroup]="addingOption">
+        <div class="modal-header">
+          <h5 class="modal-title">Add Option</h5>
+          <button type="button" class="btn btn-danger" (click)="getOption()"
+          data-toggle="modal" data-target="#myOption"> See All Option
+          </button>
+        </div>
+        <div class="modal-body">
+
+
+            <div class="form-group">
+              <label for="Entering New Option">Enter New Option</label>
+              <input type="text" class="form-control" formControlName="name" placeholder="Enter New Option Name">
+            </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger"
+          [disabled]="!addingOption.get('name').valid"
+          (click)="addOption()">Add</button>
+          <button id="addOptionClose" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!--Model For add new Topping-->
+  <div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="addToppings">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form [formGroup]="addingTopping">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Topping</h5>
+          <button type="button" class="btn btn-danger" (click)="getTopping()"
+          data-toggle="modal" data-target="#getTopping">See All Topping
+          </button>
+        </div>
+        <div class="modal-body">
+
+
+            <div class="form-group">
+              <label for="Select Option">Enter New Topping</label>
+              <div class="input-group">
+                  <input type="text" class="form-control" formControlName="name" placeholder="Enter Topping Name">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"><i class="fas fa-pound-sign"></i></span>
+                  </div>
+                  <input type="number" class="form-control" formControlName="price" placeholder="0.00">
+              </div>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger"
+          [disabled]="!addingTopping.get('name').valid"
+          (click)=" addTopping()" >Add</button>
+          <button id="addToppingsClose" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!--Model For add Create Topping Group-->
+  <div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="CreateToppingGroups">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form [formGroup]="addingToppingGroup">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Topping Group</h5>
+          <button type="button" class="btn btn-danger"(click)="getToppingGroup()"
+          data-toggle="modal" data-target="#myTappingGroup">See All Groups</button>
+        </div>
+        <div class="modal-body">
+
+
+            <div class="form-group">
+              <label for="Entering New Option">Enter New Topping Group</label>
+              <input type="text" class="form-control" formControlName="name" placeholder="Enter New Topping Group Name">
+            </div>
+
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="getTopping()"
+          data-toggle="modal" data-target="#myToppingList"
+          [disabled]="!addingToppingGroup.get('name').valid"
+          >Next</button>
+          <button id="CreateToppingGroupsClose" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+
+
+  <!--Model For Get Categories-->
+  <div class="modal" tabindex="-1" role="dialog" id="getCategories" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Select Category</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body category-modal-body">
+
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let category of categories">{{category.name}}
+              <span class=""><input [value]="category._id" type="radio" (change)="setItemCategory($event, category.name)"
+                name="category"></span>
+            </li>
+
+          </ul>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!--Model For Get Topping Group-->
+  <div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="getToppingGroup">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Select Topping Group</h5>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Default</button>
+        </div>
+        <div class="modal-body">
+
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center"
+            *ngFor="let topping of toppingGroup">{{topping.name}}
+            <span class=""><input [value]="topping._id" type="radio" (change)="setItemTopping($event, topping.name)"
+              name="topping"></span></li>
+          </ul>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+   <!--Model For Get Options-->
+   <div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="getOption">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Select Option</h5>
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Default</button>
+        </div>
+        <div class="modal-body">
+
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center"
+            *ngFor="let option of options">{{option.name}}
+            <span class=""><input [value]="option._id" type="radio" (change)="setItemOption($event, option.name)"
+            name="option"></span></li>
+          </ul>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <!--Model For Add New Category/ My Category -->
+    <div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="myCategory">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">My Category</h5>
+          </div>
+          <div class="modal-body category-modal-body">
+
+
+            <ul class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center"
+                *ngFor="let category of categories; index as i">{{category.name}}
+                <div class="list-group-item d-flex justify-content-center align-items-center">
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#editCategory"
+                 (click)="setSelectedCategory(i)">Edit
+                </button>
+                <button class="btn " (click)="deleteCategory(category._id)" data-dismiss="modal"><i class="fa fa-trash"></i></button>
+              </div>
+              </li>
+
+            </ul>
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!--Model For Add Option/ My Option -->
+    <div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="myOption">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">My Option</h5>
+          </div>
+          <div class="modal-body category-modal-body">
+
+            <ul class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let option of options; index as i">{{option.name}}
+              <div class="list-group-item d-flex justify-content-center align-items-center">
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#editOption"
+                (click)="setSelectedOption(i)">Edit
+                </button>
+                <button class="btn " (click)="deleteOption(option._id)" data-dismiss="modal"><i class="fa fa-trash"></i></button>
+              </div>
+              </li>
+            </ul>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!--Model For Add New Tapping Group/ My Tapping Group -->
+    <div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="myTappingGroup">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">My Topping Group</h5>
+          </div>
+          <div class="modal-body category-modal-body">
+
+            <ul class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let topping of toppingGroup">{{topping.name}}
+              <div class="list-group-item d-flex justify-content-center align-items-center">
+                <button type="button" class="btn btn-danger btn-sm">Edit</button>
+                <button class="btn" (click)="deleteToppingGroup(topping._id)" data-dismiss="modal"><i class="fa fa-trash"></i></button>
+              </div>
+              </li>
+            </ul>
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+     <!--Model For Add New Tappings/ See all Tapping -->
+     <div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="getTopping">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">My Topping</h5>
+          </div>
+          <div class="modal-body category-modal-body">
+
+            <ul class="list-group">
+              <li class="list-group-item d-flex justify-content-between align-items-center"
+              *ngFor="let topping of toppings; index as i">{{topping.name}} (£)
+              <div class="list-group-item d-flex justify-content-center align-items-center">
+                <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#editTopping"
+                (click)="setSelectedTopping(i)">Edit
+                </button>
+                <button class="btn" (click)="deleteTopping(topping._id)" data-dismiss="modal"><i class="fa fa-trash"></i></button>
+              </div>
+              </li>
+            </ul>
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<!--Model For add Create Topping Group/select add-->
+<div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="myToppingList">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Select add</h5>
+      </div>
+      <div class="modal-body category-modal-body">
+
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center"
+          *ngFor="let toping of toppings">{{toping.name}}
+          </li>
+        </ul>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--Model For add New Category/ see all category/ my category/ edit-->
+<div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="editCategory">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form [formGroup]="editingCategory">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Category</h5>
+      </div>
+      <div class="modal-body">
+
+        <div>
+          <label for="Entering category">Enter Category</label>
+          <input type="text" class="form-control" formControlName="name" [value]="selectedCategory?.name">
+        </div>
+        <div>
+          <label for="Add Description">Edit Description</label>
+          <input type="text" class="form-control" formControlName="description" [value]="selectedCategory?.description">
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success"
+        (click)="updateCategory()" data-dismiss="modal"
+        [disabled]="!editingCategory.get('name').valid"
+        >Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+<!--Model For add Option/ see all Option/ my Option/ edit -->
+<div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="editOption">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form [formGroup]="editingOption">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Option</h5>
+      </div>
+      <div class="modal-body">
+
+        <div>
+          <label for="Entering category">Enter Option</label>
+          <input type="text" class="form-control" formControlName="name" [value]="selectedOption?.name">
+        </div>
+        <div>
+          <label for="Add Description">Edit Description</label>
+          <input type="text" class="form-control" formControlName="description" [value]="selectedOption?.description">
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success"
+        (click)="updateOption()" data-dismiss="modal"
+        [disabled]="!editingOption.get('name').valid"
+        >Save</button>
+        <button id="editOptionClose" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+
+ <!--Model For add new Topping/ See All Topping/ My Topping/ Edit-->
+ <div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="editTopping">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form [formGroup]="editingTopping">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Topping</h5>
+      </div>
+      <div class="modal-body">
+
+
+          <div class="form-group">
+            <label for="Select Option">Enter Topping</label>
+            <div class="input-group">
+                <input type="text" class="form-control" formControlName="name" [value]="selectedTopping?.name">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="fas fa-pound-sign"></i></span>
+                </div>
+                <input type="number" class="form-control" formControlName="price" [value]="selectedTopping?.price">
+            </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success"
+        (click)="updateTopping()" data-dismiss="modal"
+        [disabled]="!editingTopping.get('name').valid"
+        >Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--Model For add new ToppingGroup/ See All ToppingGroup/ My ToppingGroup/ Edit-->
+<div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="editToppingGroup">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form [formGroup]="editingToppingGroup">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Select
+        </h5>
+      </div>
+      <div class="modal-body">
+
+
+          <div class="form-group">
+
+            <div class="input-group">
+                <input type="text" class="form-control" formControlName="name" [value]="selectedToppingGroup?.name">
+            </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success"
+        (click)="updateToppingGroup()" data-dismiss="modal"
+        [disabled]="!editingTopping.get('name').valid"
+        >Update</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!--Model For edit Item-->
+<div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="editItem">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit item</h5>
+        <button type="button" class="btn btn-danger">Delete</button>
+      </div>
+      <div class="modal-body">
+
+          <form>
+              <div class="form-group">
+                <label for="Entering New item">Enter Item</label>
+                <input type="text" class="form-control" [value]="selectedItem?.name">
+              </div>
+              <div class="form-group">
+                <label for="Select category">Select category</label>
+                <input readonly type="text" class="form-control" (click)="getCategories()"
+                  data-toggle="modal" data-target="#getCategories" [value]="selectedItem?.category.name">
+              </div>
+              <div class="form-group">
+                  <label for="Select Topping Group">Select Topping Group</label>
+                  <input readonly type="text" class="form-control" (click)="getToppingGroup()"
+                  data-toggle="modal" data-target="#getToppingGroup" [value]="selectedItem?.toppingGroups.name">
+              </div>
+              <div class="form-group">
+                  <label for="Add Description">Add Description</label>
+                  <input type="text" class="form-control" placeholder="Description">
+              </div>
+
+              <div class="form-group">
+                  <label for="Select Option">Select Option</label>
+                  <div class="input-group">
+                      <input readonly type="text" class="form-control" (click)="getOption()"
+                      data-toggle="modal" data-target="#getOption" placeholder="Default Option">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="fas fa-pound-sign"></i></span>
+                      </div>
+                      <input type="number" class="form-control" [value]="selectedItem?.price">
+                  </div>
+              </div>
+          </form>
+
+      </div>
+      <div class="modal-footer">
+          <div class="row">
+              <div class="col">
+                  <button type="button" class="btn btn-success">Update</button>
+              </div>
+              <div class="col">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>

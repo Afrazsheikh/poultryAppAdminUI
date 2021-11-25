@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="col-md-3">
-        <div class="card bg-primary res-card" routerLink="base/password"> 
+        <div class="card bg-primary res-card" routerLink="base/password">
           <div class="card-body text-center">
             <h1 class="card-text"><i class="fa fa-key"></i></h1>
             <p class="card-text">Reset Password</p>
@@ -46,20 +46,17 @@
               <th>Today Accepted Order</th>
               <th>Today Sale</th>
               <th>URL</th>
-              <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr class="table-light table-row-hover" (click)="navToGraph(i)" *ngFor="let rest of restaurants; index as i">
-              <td>{{rest._id}}</td>
+            <tr class="table-light table-row-hover" *ngFor="let rest of restaurants; index as i">
+              <td><a style="text-decoration: underline; color: blue;" (click)="navToGraph(i)">{{rest._id}}</a></td>
               <td>{{rest.restaurantName}}</td>
               <td>{{rest.isOnline ? 'Open Today' : 'Closed'}}</td>
               <td>0</td>
               <td>0</td>
               <td>{{rest.websiteURL}}</td>
-              <td class="text-center"><a href="" style="text-decoration: none; color: tomato;">
-                <i class="fa fa-edit" style="font-size: 16pt;"></i>
-              </a></td>
+             
             </tr>
           </tbody>
         </table>

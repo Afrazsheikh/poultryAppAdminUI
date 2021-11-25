@@ -52,6 +52,18 @@ export class DashboardComponent implements OnInit {
 
   }
 
+  navToMenu(index)
+  {
+    localStorage.setItem('restId', this.restaurants[index]._id);
+    this.router.navigate(['home/menus']);
+
+    /*
+    let navExtras: NavigationExtras = {
+      state: {restId: this.restaurants[index]._id}
+    }*/
+
+  }
+
   /*
   radioModel: string = 'Month';
 

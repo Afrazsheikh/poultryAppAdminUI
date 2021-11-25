@@ -24,15 +24,20 @@ export class RestaurantService {
   {
     return this.httpClient.get(environment.apiBaseUrl + 'adminService/getAllRestaurants', this.httpOptions);
   }
-  
-  getAllOwners(): Observable<any>
+
+  getRestOwner(restId): Observable<any>
   {
-    return this.httpClient.get(environment.apiBaseUrl + 'adminService/getOwners', this.httpOptions);
+    return this.httpClient.get(environment.apiBaseUrl + 'adminService/getRestOwner/' + restId, this.httpOptions);
   }
 
   getOrderGraphs(restId): Observable<any>
   {
     return this.httpClient.get(environment.apiBaseUrl + 'adminService/getOrderGraphs/' + restId, this.httpOptions);
+  }
+
+  getDaysGraphs(restId): Observable<any>
+  {
+    return this.httpClient.get(environment.apiBaseUrl + 'adminService/getDaysGraphs/' + restId, this.httpOptions);
   }
 
   resetOwnerPass(owner): Observable<any>
