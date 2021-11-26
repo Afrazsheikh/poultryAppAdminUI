@@ -129,7 +129,7 @@
                     <label for="Select Option">Select Option</label>
                     <div class="input-group">
                         <input id="newItemOption" readonly type="text" class="form-control" (click)="getOption()"
-                        data-toggle="modal" data-target="#getOption" placeholder="Select Option">
+                        data-toggle="modal" data-target="#getOption" placeholder="Default Option">
                         <div class="input-group-prepend">
                           <span class="input-group-text"><i class="fas fa-pound-sign"></i></span>
                         </div>
@@ -144,7 +144,7 @@
                 <div class="col">
                     <button type="button" class="btn btn-danger"
 
-                    (click)="addItem()">Add</button>
+                    (click)="addItem()" data-dismiss="modal" >Add</button>
                 </div>
                 <div class="col">
                     <button id="addItemClose" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
@@ -301,7 +301,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Select Category</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <button id= "categoryCloseButton" type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -344,7 +344,7 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+          <button id="toppingCloseButton" type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
         </div>
       </div>
     </div>
@@ -370,7 +370,7 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+          <button id="optionCloseButton" type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
         </div>
       </div>
     </div>
@@ -625,7 +625,7 @@
 </div>
 
 <!--Model For add new ToppingGroup/ See All ToppingGroup/ My ToppingGroup/ Edit-->
-<div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="editToppingGroup">
+<!-- <div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="editToppingGroup">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <form [formGroup]="editingToppingGroup">
@@ -655,7 +655,7 @@
       </form>
     </div>
   </div>
-</div>
+</div> -->
 
 
 <!--Model For edit Item-->
@@ -664,39 +664,41 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Edit item</h5>
-        <button type="button" class="btn btn-danger">Delete</button>
+        <button type="button" class="btn btn-danger"
+        (click)="deleteItem()" data-dismiss="modal"
+        >Delete</button>
       </div>
       <div class="modal-body">
 
-          <form>
+          <form [formGroup]="addingItem">
               <div class="form-group">
                 <label for="Entering New item">Enter Item</label>
-                <input type="text" class="form-control" [value]="selectedItem?.name">
+                <input type="text" class="form-control" formControlName="name" [value]="selectedItem?.name">
               </div>
               <div class="form-group">
                 <label for="Select category">Select category</label>
                 <input readonly type="text" class="form-control" (click)="getCategories()"
-                  data-toggle="modal" data-target="#getCategories" [value]="selectedItem?.category.name">
+                  data-toggle="modal" data-target="#getCategories" placeholder="Default Category" [value]="itemCatName">
               </div>
               <div class="form-group">
                   <label for="Select Topping Group">Select Topping Group</label>
                   <input readonly type="text" class="form-control" (click)="getToppingGroup()"
-                  data-toggle="modal" data-target="#getToppingGroup" [value]="selectedItem?.toppingGroups.name">
+                  data-toggle="modal" data-target="#getToppingGroup" formControlName="toppingGroup" placeholder="Default Topping Group"[value]="itemToppName">
               </div>
               <div class="form-group">
                   <label for="Add Description">Add Description</label>
-                  <input type="text" class="form-control" placeholder="Description">
+                  <input type="text" class="form-control" formControlName="description" placeholder="Description">
               </div>
 
               <div class="form-group">
                   <label for="Select Option">Select Option</label>
                   <div class="input-group">
                       <input readonly type="text" class="form-control" (click)="getOption()"
-                      data-toggle="modal" data-target="#getOption" placeholder="Default Option">
+                      data-toggle="modal" data-target="#getOption" formControlName="options" placeholder="Default Option" [value]="itemOptionName">
                       <div class="input-group-prepend">
                         <span class="input-group-text"><i class="fas fa-pound-sign"></i></span>
                       </div>
-                      <input type="number" class="form-control" [value]="selectedItem?.price">
+                      <input type="number" class="form-control" formControlName="price" [value]="selectedItem?.price">
                   </div>
               </div>
           </form>
@@ -705,10 +707,14 @@
       <div class="modal-footer">
           <div class="row">
               <div class="col">
-                  <button type="button" class="btn btn-success">Update</button>
+                  <button type="button" class="btn btn-success"
+                  (click)="updateItem()" data-dismiss="modal"
+                  >Update</button>
               </div>
               <div class="col">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal"
+                  (click)="editform()"
+                  >Cancel</button>
               </div>
           </div>
       </div>

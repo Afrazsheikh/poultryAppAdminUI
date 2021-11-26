@@ -19,6 +19,9 @@ export class MenuComponent implements OnInit {
   options: any;
   toppings: any;
   item: any;
+  itemCatName: any = "";
+  itemToppName: any = "";
+  itemOptionName: any = "";
   addingCategory: any;
   addingOption: any;
   addingToppingGroup: any;
@@ -29,6 +32,7 @@ export class MenuComponent implements OnInit {
   selectedToppingGroup: any;
   selectedItem: any;
   addingItem: any;
+  editingItem: any;
   editingCategory: any;
   editingOption: any;
   editingTopping: any;
@@ -36,22 +40,15 @@ export class MenuComponent implements OnInit {
   isCategoryFetched: boolean;
   category: any;
   catItem: any;
+  isItemFatched: boolean;
+  value: any;
 
 
 
   constructor(private menuService: MenuService,private router: Router)
   {
 
-this.menuService.getItems(this.restId).subscribe((response) => {
-  console.log(response);
-  if(response.success) {
-
-    this.isLoading = false;
-    this.items = response.data;
-  }
-}, err => {
-  console.log(err);
-})
+  this.getItems();
 
   this.addingCategory = new FormGroup({"name": new FormControl(null, [Validators.required]),
                                        "description": new FormControl(null) });
@@ -66,7 +63,7 @@ this.menuService.getItems(this.restId).subscribe((response) => {
   this.addingItem = new FormGroup({"name": new FormControl(null,[Validators.required]),
                                  "category": new FormControl(null,[Validators.required]),
                                  "toppingGroup": new FormControl(null,[Validators.required]),
-                                 "option": new FormControl(null,[Validators.required]),
+                                 "options": new FormControl([],[Validators.required]),
                                  "price": new FormControl(null,[Validators.required]),
                                  "description": new FormControl(null,[Validators.required])
                                                                                     });
@@ -84,10 +81,28 @@ this.menuService.getItems(this.restId).subscribe((response) => {
 
   ngOnInit(): void {}
 
+  getItems(){
+
+      this.menuService.getItems(this.restId).subscribe((response) => {
+        console.log(response);
+        if(response.success) {
+          this.isLoading = false;
+          this.items = response.data;
+          console.log(this.items);
+        }
+
+       },
+       (err) => {
+        console.log(err);
+      })
+
+  }
+
   getCategories()
   {
     if(!this.isCategoryFetched)
     {
+      document.getElementById("getCategories").classList.add("getCategoriesModal");
       this.menuService.getCategory(this.restId).subscribe((response) => {
         console.log(response);
         if(response.success) {
@@ -107,6 +122,7 @@ this.menuService.getItems(this.restId).subscribe((response) => {
 
 
   getToppingGroup() {
+    document.getElementById("getToppingGroup").classList.add("getCategoriesModal");
     this.menuService.getToppingGroup(this.restId).subscribe((response) => {
       console.log(response);
       if(response.success) {
@@ -122,6 +138,7 @@ this.menuService.getItems(this.restId).subscribe((response) => {
   }
 
   getOption() {
+    document.getElementById("getOption").classList.add("getCategoriesModal");
     this.menuService.getOption(this.restId).subscribe((response) => {
       console.log(response);
       if(response.success) {
@@ -153,27 +170,36 @@ this.menuService.getItems(this.restId).subscribe((response) => {
 
   addItem() {
     console.log(this.addingItem.value);
-    // this.menuService.addItem(this.restId, this.addingItem.value).subscribe((response) => {
-    //   if(response.success) {
-    //     document.getElementById("addItemClose").click();
-    //     this.addingItem.patchValue({name:'',category:'',option:'',toppingGroup:'',price:''});
-    //     console.log(response);
-    //   }
+    this.menuService.addItem(this.restId, this.addingItem.value).subscribe((response) => {
+      if(response.success) {
+        document.getElementById("addItemClose").click();
+        this.getItems();
+        this.addingItem.patchValue({name:null,category:null,toppingGroup:null,options:[],price:null,description:null});
+        let elem: any = document.getElementById('newItemCat');
+        elem.value = null;
+        elem = document.getElementById('newItemTopp');
+        elem.value = null;
+        elem = document.getElementById('newItemOption');
+        elem.value = [];
 
-    //  },
-    //  (err) => {
+        console.log(response);
+      }
 
-    //   console.log(err);
-    // })
+     },
+     (err) => {
+
+      console.log(err);
+    })
   }
 
-  updateItem() {
-    this.menuService.updateItem(this.restId).subscribe((response) => {
+  updateItem(){
+  console.log(this.addingItem.value);
+    this.menuService.updateItem(this.selectedItem._id, this.addingItem.value).subscribe((response) => {
       console.log(response);
       if(response.success) {
-        this.item= response.data;
+        this.item = response.data;
         this.isCategoryFetched = false;
-        this.getCategories();
+        this.getItems();
         console.log(this.item);
       }
 
@@ -252,6 +278,23 @@ this.menuService.getItems(this.restId).subscribe((response) => {
         console.log(err);
       })
    }
+
+   deleteItem(){
+    console.log(this.selectedItem._id);
+    this.menuService.deleteItem(this.selectedItem._id).subscribe((response) => {
+      if(response.success) {
+        this.isItemFatched = false;
+        this.getItems();
+        console.log("Successfully Deleted");
+      }
+
+    },
+    (err) => {
+
+      console.log(err);
+    })
+ }
+
 
    deleteCategory(catId){
     console.log(catId);
@@ -411,31 +454,47 @@ updateToppingGroup() {
 
   editItemList(index) {
     this.selectedItem = this.items[index];
-    console.log(this.selectedItem)
+    this.addingItem.patchValue({"name":this.selectedItem.name,"category":this.selectedItem.category,
+    "toppingGroup":this.selectedItem.toppingGroup,"options":this.selectedItem.options,"price":this.selectedItem.price,
+    "description":this.selectedItem.description});
+    console.log("Patched value....." +  this.addingItem.value);
+    console.log(this.selectedItem);
   }
+
 
   setItemCategory(event, catName){
     let itemCat: any = document.getElementById('newItemCat');
     itemCat.value = catName;
+    this.itemCatName = catName;
     this.addingItem.patchValue({category: event.target.value});
     console.log(event.target.value);
     console.log(catName);
+    // document.getElementById("getCategories").classList.remove("getCategoriesModal");
+    document.getElementById("categoryCloseButton").click();
   }
 
   setItemTopping(event, toppName){
     let itemtopp: any = document.getElementById('newItemTopp');
     itemtopp.value = toppName;
+    this.itemToppName = toppName;
     this.addingItem.patchValue({toppingGroup: event.target.value});
     console.log(event.target.value);
     console.log(toppName);
+    document.getElementById("toppingCloseButton").click();
   }
 
   setItemOption(event, optionName){
     let itemOption: any = document.getElementById('newItemOption');
     itemOption.value = optionName;
+    this.itemOptionName = optionName;
     this.addingItem.patchValue({option: event.target.value});
     console.log(event.target.value);
     console.log(optionName);
+    document.getElementById("optionCloseButton").click();
+  }
+
+  editform(){
+    this.addingItem.patchValue({name:null,category:null,toppingGroup:null,options:[],price:null,description:null});
   }
 
 }

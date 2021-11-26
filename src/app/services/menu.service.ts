@@ -49,9 +49,9 @@ export class MenuService {
       return this.httpClient.get(environment.apiBaseUrl + 'adminService/getRestItems/' + id, this.httpOptions);
   }
 
-  updateItem(id): Observable<any>
+  updateItem(id, data): Observable<any>
   {
-      return this.httpClient.put(environment.apiBaseUrl + 'adminService/updateRestItem/' + id, this.httpOptions);
+      return this.httpClient.put(environment.apiBaseUrl + 'adminService/updateRestItem/' + id, data, this.httpOptions);
   }
 
   getToppingGroup(id): Observable<any>
@@ -69,9 +69,13 @@ export class MenuService {
       return this.httpClient.get(environment.apiBaseUrl + 'adminService/getRestTopping/' + id, this.httpOptions);
   }
 
+  deleteItem(id): Observable<any>
+  {
+    return this.httpClient.delete(environment.apiBaseUrl + 'adminService/deleteRestItem/' + id, this.httpOptions);
+  }
+
   deleteCategory(id): Observable<any>
   {
-    console.log(this.httpOptions);
     return this.httpClient.delete(environment.apiBaseUrl + 'adminService/deleteRestCategory/' + id, this.httpOptions);
   }
 
