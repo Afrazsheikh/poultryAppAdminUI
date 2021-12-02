@@ -53,13 +53,13 @@
     </div>
 
     <div class="row">
-        <div *ngIf="isLoading" class="col text-center">
+        <div *ngIf="isLoadingItem" class="col text-center">
             <div class="spinner-border text-danger" role="status">
                 <span class="sr-only">Loading...</span>
             </div>
         </div>
 
-        <div *ngIf="!isLoading" class="col">
+        <div *ngIf="!isLoadingItem" class="col">
           <table class="table table-bordered table-hover">
             <thead>
               <tr class="table-success">
@@ -141,9 +141,13 @@
         </div>
         <div class="modal-footer">
             <div class="row">
-                <div class="col">
+                  <div *ngIf="isLoading" class="col text-center">
+                    <div class="spinner-border spinner-border-sm text-danger" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <div *ngIf="!isLoading" class="col">
                     <button type="button" class="btn btn-danger"
-
                     (click)="addItem()" data-dismiss="modal" >Add</button>
                 </div>
                 <div class="col">
@@ -180,10 +184,19 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger"
-          [disabled]="!addingCategory.get('name').valid"
-          (click)="addCategory()">Add</button>
-          <button id="addCategoryClose" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <div class="row">
+            <div *ngIf="isLoading" class="col text-center">
+              <div class="spinner-border spinner-border-sm text-danger" role="status">
+                  <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+            <div *ngIf="!isLoading" class="col">
+              <button type="button" class="btn btn-danger"
+              [disabled]="!addingCategory.get('name').valid"
+              (click)="addCategory()">Add</button>
+            </div>
+              <button id="addCategoryClose" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+         </div>
         </div>
       </form>
       </div>
@@ -213,10 +226,19 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger"
-          [disabled]="!addingOption.get('name').valid"
-          (click)="addOption()">Add</button>
-          <button id="addOptionClose" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <div class="row">
+            <div *ngIf="isLoading" class="col text-center">
+              <div class="spinner-border spinner-border-sm text-danger" role="status">
+                  <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+            <div *ngIf="!isLoading" class="col">
+              <button type="button" class="btn btn-danger"
+              [disabled]="!addingOption.get('name').valid"
+              (click)="addOption()">Add</button>
+            </div>
+              <button id="addOptionClose" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
         </div>
         </form>
       </div>
@@ -231,7 +253,7 @@
         <form [formGroup]="addingTopping">
         <div class="modal-header">
           <h5 class="modal-title">Add New Topping</h5>
-          <button type="button" class="btn btn-danger" (click)="getTopping()"
+          <button type="button" class="btn btn-danger" (click)="getTopping(false)"
           data-toggle="modal" data-target="#getTopping">See All Topping
           </button>
         </div>
@@ -251,10 +273,19 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger"
-          [disabled]="!addingTopping.get('name').valid"
-          (click)=" addTopping()" >Add</button>
-          <button id="addToppingsClose" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <div class="row">
+            <div *ngIf="isLoading" class="col text-center">
+              <div class="spinner-border spinner-border-sm text-danger" role="status">
+                  <span class="sr-only">Loading...</span>
+              </div>
+            </div>
+            <div *ngIf="!isLoading" class="col">
+              <button type="button" class="btn btn-danger"
+              [disabled]="!addingTopping.get('name').valid"
+              (click)=" addTopping()" >Add</button>
+            </div>
+              <button id="addToppingsClose" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          </div>
         </div>
       </form>
       </div>
@@ -283,7 +314,7 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" (click)="getTopping()"
+          <button type="button" class="btn btn-danger" (click)="getTopping(false)"
           data-toggle="modal" data-target="#myToppingList"
           [disabled]="!addingToppingGroup.get('name').valid"
           >Next</button>
@@ -450,9 +481,11 @@
 
             <ul class="list-group">
               <li class="list-group-item d-flex justify-content-between align-items-center"
-              *ngFor="let topping of toppingGroup">{{topping.name}}
+              *ngFor="let topping of toppingGroup; index as i">{{topping.name}}
               <div class="list-group-item d-flex justify-content-center align-items-center">
-                <button type="button" class="btn btn-danger btn-sm">Edit</button>
+                <button (click)="setSelectedToppingGroup(i)" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#editToppingGroup">
+                Edit
+                </button>
                 <button class="btn" (click)="deleteToppingGroup(topping._id)" data-dismiss="modal"><i class="fa fa-trash"></i></button>
               </div>
               </li>
@@ -508,15 +541,33 @@
 
         <ul class="list-group">
           <li class="list-group-item d-flex justify-content-between align-items-center"
-          *ngFor="let toping of toppings">{{toping.name}}
+          *ngFor="let toping of toppings; index as i">{{toping.name}}
+            <span class=""><input class="newToppingGroup"  [value]="toping._id" type="checkbox" (change)="addItemToppingGroup(toping._id, toping.name, i) "
+            ></span>
           </li>
         </ul>
 
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success">Save</button>
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <div class="row">
+          <div *ngIf="isLoading" class="col text-center">
+            <div class="spinner-border spinner-border-sm text-danger" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <div *ngIf="!isLoading" class="col">
+            <button type="button" class="btn btn-success"
+
+            (click)="addToppingGroup(); clearCheckData(); "
+            >Save
+            </button>
+          </div>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+        (click)="clearCheckData()"
+        >Cancel
+        </button>
+       </div>
       </div>
     </div>
   </div>
@@ -625,10 +676,9 @@
 </div>
 
 <!--Model For add new ToppingGroup/ See All ToppingGroup/ My ToppingGroup/ Edit-->
-<!-- <div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="editToppingGroup">
+<div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="editToppingGroup">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <form [formGroup]="editingToppingGroup">
       <div class="modal-header">
         <h5 class="modal-title">
           Select
@@ -636,27 +686,25 @@
       </div>
       <div class="modal-body">
 
-
-          <div class="form-group">
-
-            <div class="input-group">
-                <input type="text" class="form-control" formControlName="name" [value]="selectedToppingGroup?.name">
-            </div>
-        </div>
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center"
+          *ngFor="let topping of toppings; index as i">{{topping.name}}
+          <span #toppingCheckboxes>
+            <input [value]="topping._id" [checked]="topping.isSelected" type="checkbox" (change)="setSelectedTopping($event, topping.name)"
+            ></span>
+          </li>
+        </ul>
 
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success"
         (click)="updateToppingGroup()" data-dismiss="modal"
-        [disabled]="!editingTopping.get('name').valid"
         >Update</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
       </div>
-      </form>
     </div>
   </div>
-</div> -->
-
+</div>
 
 <!--Model For edit Item-->
 <div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="editItem">
@@ -721,3 +769,4 @@
     </div>
   </div>
 </div>
+

@@ -15,13 +15,15 @@ export class MenuComponent implements OnInit {
   items: any;
   categories: any;
   toppingGroup: any;
-  isLoading: boolean = true;
+  isLoading: boolean = false;
+  isLoadingItem: boolean = true;
   options: any;
   toppings: any;
   item: any;
   itemCatName: any = "";
   itemToppName: any = "";
   itemOptionName: any = "";
+  toppGroup: any = "";
   addingCategory: any;
   addingOption: any;
   addingToppingGroup: any;
@@ -42,7 +44,7 @@ export class MenuComponent implements OnInit {
   catItem: any;
   isItemFatched: boolean;
   value: any;
-
+  selectedToppingIds: any[] = [];
 
 
   constructor(private menuService: MenuService,private router: Router)
@@ -58,7 +60,8 @@ export class MenuComponent implements OnInit {
   this.addingTopping = new FormGroup({"name": new FormControl(null, [Validators.required]),
                                       "price": new FormControl(null, [Validators.required]) });
 
-  this.addingToppingGroup = new FormGroup({"name": new FormControl(null, [Validators.required]) });
+  this.addingToppingGroup = new FormGroup({"name": new FormControl(null, [Validators.required]),
+                                           "toppings": new FormControl([])});
 
   this.addingItem = new FormGroup({"name": new FormControl(null,[Validators.required]),
                                  "category": new FormControl(null,[Validators.required]),
@@ -86,7 +89,7 @@ export class MenuComponent implements OnInit {
       this.menuService.getItems(this.restId).subscribe((response) => {
         console.log(response);
         if(response.success) {
-          this.isLoading = false;
+          this.isLoadingItem = false;
           this.items = response.data;
           console.log(this.items);
         }
@@ -153,11 +156,14 @@ export class MenuComponent implements OnInit {
     })
   }
 
-  getTopping() {
+  getTopping(checkCheckedToppings) {
     this.menuService.getTopping(this.restId).subscribe((response) => {
       console.log(response);
       if(response.success) {
         this.toppings= response.data;
+        if(checkCheckedToppings) {
+          this.setCheckedToppings();
+        }
         console.log(this.toppings);
       }
 
@@ -169,9 +175,11 @@ export class MenuComponent implements OnInit {
   }
 
   addItem() {
+    this.isLoading = true;
     console.log(this.addingItem.value);
     this.menuService.addItem(this.restId, this.addingItem.value).subscribe((response) => {
       if(response.success) {
+        this.isLoading = false;
         document.getElementById("addItemClose").click();
         this.getItems();
         this.addingItem.patchValue({name:null,category:null,toppingGroup:null,options:[],price:null,description:null});
@@ -211,8 +219,10 @@ export class MenuComponent implements OnInit {
   }
 
   addTopping() {
+    this.isLoading = true;
     this.menuService.addTopping(this.restId, this.addingTopping.value).subscribe((response) => {
       if(response.success) {
+        this.isLoading = false;
         document.getElementById("addToppingsClose").click();
         this.addingTopping.patchValue({name:'',price:''});
         this.isCategoryFetched = false;
@@ -228,8 +238,10 @@ export class MenuComponent implements OnInit {
   }
 
   addOption() {
+    this.isLoading = true;
     this.menuService.addOption(this.restId, this.addingOption.value).subscribe((response) => {
       if(response.success) {
+        this.isLoading = false;
         document.getElementById("addOptionClose").click();
         this.addingOption.patchValue({name: ''});
         this.isCategoryFetched = false;
@@ -245,8 +257,12 @@ export class MenuComponent implements OnInit {
   }
 
   addToppingGroup() {
+    this.isLoading = true;
+    this.addingToppingGroup.patchValue({toppings: this.selectedToppingIds});
+    console.log(this.addingToppingGroup.value);
     this.menuService.addToppingGroup(this.restId, this.addingToppingGroup.value).subscribe((response) => {
       if(response.success) {
+        this.isLoading = false;
         document.getElementById("CreateToppingGroupsClose").click();
         this.addingToppingGroup.patchValue({name: ''});
         this.isCategoryFetched = false;
@@ -259,13 +275,14 @@ export class MenuComponent implements OnInit {
 
       console.log(err);
     })
-  }
+   }
 
   addCategory() {
-
+      this.isLoading = true;
       this.menuService.addCategory(this.restId, this.addingCategory.value).subscribe((response) => {
         if(response.success) {
           document.getElementById("addCategoryClose").click();
+          this.isLoading = false;
           this.addingCategory.patchValue({name: '',description:''});
           this.isCategoryFetched = false;
           this.getCategories();
@@ -401,7 +418,7 @@ updateTopping() {
     console.log(response);
     if(response.success) {
       this.isCategoryFetched = false;
-      this.getTopping();
+      this.getTopping(false);
     }
 
    },
@@ -441,16 +458,31 @@ updateToppingGroup() {
   }
 
   setSelectedTopping(index) {
-
-    this.selectedTopping = this.toppings[index];
+    this.selectedTopping = this.toppingGroup[index];
     console.log(this.selectedTopping)
   }
 
   setSelectedToppingGroup(index) {
-
+    this.getTopping(true);
     this.selectedToppingGroup = this.toppingGroup[index];
-    console.log(this.selectedToppingGroup)
+    console.log(this.selectedToppingGroup);
+
   }
+
+  setCheckedToppings() {
+
+    this.selectedToppingGroup.toppings.forEach(groupTopping => {
+
+      for(let i = 0; i < this.toppings.length; i++)
+      {
+        if(groupTopping._id == this.toppings[i]._id) {
+          this.toppings[i]['isSelected'] = true;
+
+          console.log(this.toppings);
+        }
+      }
+    });
+}
 
   editItemList(index) {
     this.selectedItem = this.items[index];
@@ -491,6 +523,29 @@ updateToppingGroup() {
     console.log(event.target.value);
     console.log(optionName);
     document.getElementById("optionCloseButton").click();
+  }
+
+  addItemToppingGroup(toppGroupId, toppGroupName, index){
+
+    let toppGroup: any = document.getElementsByClassName('newToppingGroup')[index] as HTMLInputElement;
+    // toppGroup.value = toppGroupName;
+    // this.toppGroup = toppGroupName;
+    console.log(toppGroup.checked);
+    if(toppGroup.checked == true){
+      this.selectedToppingIds.push(toppGroupId);
+    }
+    else{
+      var index: any = this.selectedToppingIds.indexOf(toppGroupId);
+
+      this.selectedToppingIds.splice(index, 1);
+    }
+    console.log(this.selectedToppingIds);
+
+  }
+
+  clearCheckData(){
+
+    this.selectedToppingIds = [];
   }
 
   editform(){
