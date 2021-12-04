@@ -15,10 +15,12 @@ export class MenuComponent implements OnInit {
   items: any;
   categories: any;
   toppingGroup: any;
+  allergyGroup: any;
   isLoading: boolean = false;
   isLoadingItem: boolean = true;
   options: any;
   toppings: any;
+  allergies: any;
   item: any;
   itemCatName: any = "";
   itemToppName: any = "";
@@ -31,7 +33,9 @@ export class MenuComponent implements OnInit {
   selectedCategory: any;
   selectedOption: any;
   selectedTopping: any;
+  selectedAllergy: any;
   selectedToppingGroup: any;
+  selectedAllergyGroup: any;
   selectedItem: any;
   addingItem: any;
   editingItem: any;
@@ -39,12 +43,16 @@ export class MenuComponent implements OnInit {
   editingOption: any;
   editingTopping: any;
   editingToppingGroup: any;
+  addingAllergy: any;
+  addingAllergyGroup: any;
   isCategoryFetched: boolean;
   category: any;
   catItem: any;
   isItemFatched: boolean;
   value: any;
   selectedToppingIds: any[] = [];
+  selectedAllergyIds: any[] = [];
+  editingAllergy: any;
 
 
   constructor(private menuService: MenuService,private router: Router)
@@ -79,6 +87,14 @@ export class MenuComponent implements OnInit {
 
   this.editingTopping = new FormGroup({"name": new FormControl(null, [Validators.required]),
                                       "price": new FormControl(null, [Validators.required]) });
+
+  this.addingAllergy = new FormGroup({"name": new FormControl(null, [Validators.required]),
+                                      "description": new FormControl(null) });
+
+  this.addingAllergyGroup = new FormGroup({"name": new FormControl(null, [Validators.required])});
+
+  this.editingAllergy = new FormGroup({"name": new FormControl(null, [Validators.required]),
+                                      "description": new FormControl(null) });
 
   }
 
@@ -131,6 +147,22 @@ export class MenuComponent implements OnInit {
       if(response.success) {
         this.toppingGroup= response.data;
         console.log(this.toppingGroup);
+      }
+
+     },
+     (err) => {
+
+      console.log(err);
+    })
+  }
+
+  getAllergyGroup() {
+    // document.getElementById("getAllergyGroup").classList.add("getCategoriesModal");
+    this.menuService.getAllergyGroup(this.restId).subscribe((response) => {
+      console.log(response);
+      if(response.success) {
+        this.allergyGroup= response.data;
+        console.log(this.allergyGroup);
       }
 
      },
@@ -237,6 +269,43 @@ export class MenuComponent implements OnInit {
     })
   }
 
+  addAllergy() {
+    this.isLoading = true;
+    this.menuService.addAllergy(this.restId, this.addingAllergy.value).subscribe((response) => {
+      if(response.success) {
+        this.isLoading = false;
+        document.getElementById("addAllergyClose").click();
+        this.addingAllergy.patchValue({name:'',description:''});
+        this.isCategoryFetched = false;
+        this.getCategories();
+        console.log(response);
+      }
+
+     },
+     (err) => {
+
+      console.log(err);
+    })
+  }
+
+  getAllergy(checkCheckedAllergies) {
+    this.menuService.getAllergy(this.restId).subscribe((response) => {
+      console.log(response);
+      if(response.success) {
+        this.allergies = response.data;
+        if(checkCheckedAllergies) {
+          this.setCheckedAllergies();
+        }
+        console.log(this.allergies);
+      }
+
+     },
+     (err) => {
+
+      console.log(err);
+    })
+  }
+
   addOption() {
     this.isLoading = true;
     this.menuService.addOption(this.restId, this.addingOption.value).subscribe((response) => {
@@ -256,9 +325,31 @@ export class MenuComponent implements OnInit {
     })
   }
 
+
   addToppingGroup() {
     this.isLoading = true;
     this.addingToppingGroup.patchValue({toppings: this.selectedToppingIds});
+    console.log(this.addingToppingGroup.value);
+    this.menuService.addToppingGroup(this.restId, this.addingToppingGroup.value).subscribe((response) => {
+      if(response.success) {
+        this.isLoading = false;
+        document.getElementById("CreateToppingGroupsClose").click();
+        this.addingToppingGroup.patchValue({name: ''});
+        this.isCategoryFetched = false;
+        this.getCategories();
+        console.log(response);
+      }
+
+     },
+     (err) => {
+
+      console.log(err);
+    })
+   }
+
+   addAllergyGroup() {
+    this.isLoading = true;
+    this.addingAllergyGroup.patchValue({allergies: this.selectedAllergyIds});
     console.log(this.addingToppingGroup.value);
     this.menuService.addToppingGroup(this.restId, this.addingToppingGroup.value).subscribe((response) => {
       if(response.success) {
@@ -361,6 +452,22 @@ deleteTopping(id){
   })
 }
 
+deleteAllergy(id){
+  console.log(id);
+  this.menuService.deleteAllergy(id).subscribe((response) => {
+    if(response.success) {
+      this.isCategoryFetched = false;
+      this.getCategories();
+      console.log("Successfully Deleted");
+    }
+
+  },
+  (err) => {
+
+    console.log(err);
+  })
+}
+
 deleteToppingGroup(id){
   console.log(id);
   this.menuService.deleteToppingGroup(id).subscribe((response) => {
@@ -428,6 +535,22 @@ updateTopping() {
   })
 }
 
+updateAllergy() {
+
+  this.menuService.updateAllergy(this.selectedAllergy._id, this.editingAllergy.value).subscribe((response) => {
+    console.log(response);
+    if(response.success) {
+      this.isCategoryFetched = false;
+      this.getAllergy(false);
+    }
+
+   },
+   (err) => {
+
+    console.log(err);
+  })
+}
+
 updateToppingGroup() {
 
   console.log(this.editingOption.value)
@@ -469,6 +592,18 @@ updateToppingGroup() {
 
   }
 
+  setSelectedAllergy(index) {
+    this.selectedAllergy = this.allergyGroup[index];
+    console.log(this.selectedAllergy)
+  }
+
+  setSelectedAllergyGroup(index) {
+    this.getAllergy(true);
+    this.selectedAllergyGroup = this.allergyGroup[index];
+    console.log(this.selectedAllergyGroup);
+
+  }
+
   setCheckedToppings() {
 
     this.selectedToppingGroup.toppings.forEach(groupTopping => {
@@ -482,6 +617,21 @@ updateToppingGroup() {
         }
       }
     });
+}
+
+setCheckedAllergies() {
+
+  this.selectedAllergyGroup.allergies.forEach(groupAllergy => {
+
+    for(let i = 0; i < this.allergies.length; i++)
+    {
+      if(groupAllergy._id == this.allergies[i]._id) {
+        this.allergies[i]['isSelected'] = true;
+
+        console.log(this.allergies);
+      }
+    }
+  });
 }
 
   editItemList(index) {
@@ -525,11 +675,9 @@ updateToppingGroup() {
     document.getElementById("optionCloseButton").click();
   }
 
-  addItemToppingGroup(toppGroupId, toppGroupName, index){
+  addItemToppingGroup(toppGroupId, index){
 
     let toppGroup: any = document.getElementsByClassName('newToppingGroup')[index] as HTMLInputElement;
-    // toppGroup.value = toppGroupName;
-    // this.toppGroup = toppGroupName;
     console.log(toppGroup.checked);
     if(toppGroup.checked == true){
       this.selectedToppingIds.push(toppGroupId);
@@ -543,10 +691,33 @@ updateToppingGroup() {
 
   }
 
+  addItemAllergyGroup(allergyGroupId, index){
+
+    let allergyGroup: any = document.getElementsByClassName('newAllergyGroup')[index] as HTMLInputElement;
+    console.log(allergyGroup.checked);
+    if(allergyGroup.checked == true){
+      this.selectedAllergyIds.push(allergyGroupId);
+    }
+    else{
+      var index: any = this.selectedAllergyIds.indexOf(allergyGroupId);
+
+      this.selectedAllergyIds.splice(index, 1);
+    }
+    console.log(this.selectedAllergyIds);
+
+  }
+
   clearCheckData(){
 
     this.selectedToppingIds = [];
+
   }
+
+  clearCheckDataAllergy(){
+
+    this.selectedAllergyIds = [];
+  }
+
 
   editform(){
     this.addingItem.patchValue({name:null,category:null,toppingGroup:null,options:[],price:null,description:null});

@@ -114,5 +114,44 @@ export class MenuService {
       return this.httpClient.put(environment.apiBaseUrl + 'adminService/updateRestToppingGroup/' + id, data, this.httpOptions);
   }
 
+  addAllergy(id, data): Observable<any>
+  {
+    return this.httpClient.post(environment.apiBaseUrl + 'adminService/addRestAllergy/' + id, data, this.httpOptions);
+  }
+
+  getAllergy(id): Observable<any>
+  {
+      return this.httpClient.get(environment.apiBaseUrl + 'adminService/getRestAllergy/' + id, this.httpOptions);
+  }
+
+  updateAllergy(id, data): Observable<any>
+  {
+      return this.httpClient.put(environment.apiBaseUrl + 'adminService/updateRestAllergy/' + id, data, this.httpOptions);
+  }
+
+  deleteAllergy(id): Observable<any>
+  {
+    return this.httpClient.delete(environment.apiBaseUrl + 'adminService/deleteRestAllergy/' + id, this.httpOptions);
+  }
+
+  addAllergyGroup(id, data): Observable<any>
+  {
+    return this.httpClient.post(environment.apiBaseUrl + 'adminService/addRestAllergyGroup/' + id, data, this.httpOptions);
+  }
+
+  getAllergyGroup(id): Observable<any>
+  {
+      return this.httpClient.get(environment.apiBaseUrl + 'adminService/getRestAllergyGroup/' + id, this.httpOptions);
+  }
+
+  updateAllergyGroup(id, data): Observable<any>
+  {
+      return this.httpClient.put(environment.apiBaseUrl + 'adminService/updateRestAllergyGroup/' + id, data, this.httpOptions);
+  }
+
+  deleteAllergyGroup(id): Observable<any>
+  {
+    return this.httpClient.delete(environment.apiBaseUrl + 'adminService/deleteRestAllergyGroup/' + id, this.httpOptions);
+  }
 
 }

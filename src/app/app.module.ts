@@ -44,6 +44,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
+import { SettingsComponent } from './views/settings/settings.component';
 
 @NgModule({
   imports: [
@@ -70,7 +71,8 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
     ...APP_CONTAINERS,
     P404Component,
     P500Component,
-    LoginComponent
+    LoginComponent,
+    SettingsComponent
     ],
   providers: [
     {

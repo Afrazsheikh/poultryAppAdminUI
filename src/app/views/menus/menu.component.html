@@ -1,15 +1,32 @@
 <div class="app-body">
     <div class="container" >
         <div class="row">
-            <div class="col-3 text-right" data-toggle="modal" data-target="#addItem">
-                <div class="card bg-primary res-card">
-                  <div class="card-body text-center">
-                    <h1 class="card-text"> </h1>
-                    <p class="card-text">Add New Item</p>
-                  </div>
+          <div class="col-3 text-right" data-toggle="modal" data-target="#addAllergy">
+              <div class="card bg-primary res-card">
+                <div class="card-body text-center">
+                  <h1 class="card-text"> </h1>
+                  <p class="card-text">Add Allergy</p>
                 </div>
               </div>
-        </div>
+            </div>
+            <div class="col-3 text-right" data-toggle="modal" data-target="#addAllergyGroup">
+              <div class="card bg-primary res-card">
+                <div class="card-body text-center">
+                  <h1 class="card-text"> </h1>
+                  <p class="card-text">Add Allergy Group</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-3 text-right" data-toggle="modal" data-target="#addItem">
+              <div class="card bg-primary res-card">
+                <div class="card-body text-center">
+                  <h1 class="card-text"> </h1>
+                   <p class="card-text">Add New Item</p>
+                </div>
+              </div>
+            </div>
+       </div>
 
       <div class="row">
 
@@ -542,7 +559,7 @@
         <ul class="list-group">
           <li class="list-group-item d-flex justify-content-between align-items-center"
           *ngFor="let toping of toppings; index as i">{{toping.name}}
-            <span class=""><input class="newToppingGroup"  [value]="toping._id" type="checkbox" (change)="addItemToppingGroup(toping._id, toping.name, i) "
+            <span class=""><input class="newToppingGroup"  [value]="toping._id" type="checkbox" (change)="addItemToppingGroup(toping._id, toping.name, i)"
             ></span>
           </li>
         </ul>
@@ -558,8 +575,7 @@
           </div>
           <div *ngIf="!isLoading" class="col">
             <button type="button" class="btn btn-success"
-
-            (click)="addToppingGroup(); clearCheckData(); "
+            (click)="addToppingGroup(); clearCheckData();"
             >Save
             </button>
           </div>
@@ -770,3 +786,277 @@
   </div>
 </div>
 
+
+<!--Model For Add Allergy -->
+<div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="addAllergy">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Allergy Description</h5>
+          <button type="button" class="btn btn-danger"
+          (click)="getAllergy(false)"
+          data-toggle="modal" data-target="#myAllergy"
+          >See All
+          </button>
+      </div>
+
+      <div class="modal-body">
+
+          <form [formGroup]="addingAllergy">
+              <div class="form-group">
+                <label for="Entering New item">Enter Allergy Title</label>
+                <input type="text" class="form-control" formControlName="name" placeholder="Item Tittle">
+              </div>
+
+              <div class="form-group">
+                  <label for="Add Description">Add Description</label>
+                  <textarea type="text" class="form-control" formControlName="description"  placeholder="Add Description"
+                  rows="4" cols="50">
+                  </textarea>
+              </div>
+
+          </form>
+
+      </div>
+      <div class="modal-footer">
+          <div class="row">
+                <div *ngIf="isLoading" class="col text-center">
+                  <div class="spinner-border spinner-border-sm text-danger" role="status">
+                      <span class="sr-only">Loading...</span>
+                  </div>
+              </div>
+              <div *ngIf="!isLoading" class="col">
+                  <button type="button" class="btn btn-danger"
+                  [disabled]="!addingAllergy.get('name').valid"
+                  (click)="addAllergy()" data-dismiss="modal" >Add</button>
+              </div>
+              <div class="col">
+                  <button id="addAllergyClose" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Model For Add Allergy Description/ My Allergy -->
+<div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="myAllergy">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">My Allergy</h5>
+      </div>
+      <div class="modal-body category-modal-body">
+
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center"
+          *ngFor="let allergy of allergies; index as i">{{allergy.name}}
+          <div class="list-group-item d-flex justify-content-center align-items-center">
+            <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#editAllergy"
+            (click)="setSelectedAllergy(i)">Edit
+            </button>
+            <button class="btn" (click)="deleteAllergy(allergy._id)" data-dismiss="modal"><i class="fa fa-trash"></i></button>
+          </div>
+          </li>
+        </ul>
+
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Model For Edit Allergy -->
+<div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="editAllergy">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form [formGroup]="editingAllergy">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Allergy</h5>
+      </div>
+
+      <div class="modal-body">
+
+              <div class="form-group">
+                <label for="Entering New item">Enter Allergy</label>
+                <input type="text" class="form-control" formControlName="name" [value]="selectedAllergy?.name">
+              </div>
+
+              <div class="form-group">
+                  <label for="Add Description">Edit Description</label>
+                  <textarea type="text" class="form-control" formControlName="description" [value]="selectedAllergy?.description"
+                  rows="4" cols="50">
+                  </textarea>
+              </div>
+
+      </div>
+      <div class="modal-footer">
+          <div class="row">
+                <div *ngIf="isLoading" class="col text-center">
+                  <div class="spinner-border spinner-border-sm text-danger" role="status">
+                      <span class="sr-only">Loading...</span>
+                  </div>
+              </div>
+              <div *ngIf="!isLoading" class="col">
+                  <button type="button" class="btn btn-success"
+                  (click)="updateAllergy()" data-dismiss="modal" >update</button>
+              </div>
+              <div class="col">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              </div>
+          </div>
+      </div>
+    </form>
+    </div>
+  </div>
+</div>
+
+<!--Model For Add Allergy Group-->
+<div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="addAllergyGroup">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add New Allergy Group</h5>
+        <button type="button" class="btn btn-danger"
+          data-toggle="modal" data-target="#myAllergyGroup" (click)="getAllergyGroup()"
+          >See All Allergy Group
+          </button>
+      </div>
+
+      <div class="modal-body">
+
+          <form [formGroup]="addingAllergyGroup">
+              <div class="form-group">
+                <label for="Entering New item">Enter New Allergy Group</label>
+                <input type="text" class="form-control" formControlName="name" placeholder="Enter New Allergy Group Name">
+              </div>
+
+          </form>
+
+      </div>
+      <div class="modal-footer">
+          <div class="row">
+                <div *ngIf="isLoading" class="col text-center">
+                  <div class="spinner-border spinner-border-sm text-danger" role="status">
+                      <span class="sr-only">Loading...</span>
+                  </div>
+              </div>
+              <div *ngIf="!isLoading" class="col">
+                  <button type="button" class="btn btn-danger"
+                  [disabled]="!addingAllergyGroup.get('name').valid"
+                  (click)="getAllergy(false)"
+                  data-toggle="modal" data-target="#selectAllegry"
+                  >next</button>
+              </div>
+              <div class="col">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Model For add new Allergy Group/select Allergies-->
+<div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="selectAllegry">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Select Allergies</h5>
+      </div>
+      <div class="modal-body category-modal-body">
+
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center"
+          *ngFor="let allergy of allergies; index as i">{{allergy.name}}
+            <span class=""><input class="newAllergyGroup"  [value]="allergy._id" type="checkbox" (change)="addItemAllergyGroup(allergy_id, allergy.name, i) "
+            ></span>
+          </li>
+        </ul>
+
+
+      </div>
+      <div class="modal-footer">
+        <div class="row">
+          <div *ngIf="isLoading" class="col text-center">
+            <div class="spinner-border spinner-border-sm text-danger" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+          <div *ngIf="!isLoading" class="col">
+            <button type="button" class="btn btn-success"
+            (click)="addAllergyGroup(); clearCheckDataAllergy()"
+            >Save
+            </button>
+          </div>
+        <button (click)="clearCheckDataAllergy()" type="button" class="btn btn-secondary" data-dismiss="modal"
+        >Cancel
+        </button>
+       </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <!--Model For Add New Allergy Group/ My Allergy Group -->
+  <div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="myAllergyGroup">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">My Allergy Group</h5>
+        </div>
+        <div class="modal-body category-modal-body">
+
+          <ul class="list-group">
+            <li class="list-group-item d-flex justify-content-between align-items-center"
+            *ngFor="let option of options; index as i">{{option.name}}
+            <div class="list-group-item d-flex justify-content-center align-items-center">
+              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#editAllergyGroup"
+              (click)="setSelectedOption(i)">Edit
+              </button>
+              <button class="btn " (click)="deleteOption(option._id)" data-dismiss="modal"><i class="fa fa-trash"></i></button>
+            </div>
+            </li>
+          </ul>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!--Model For add new Allergy Group/ My Allergy Group/ Edit-->
+<div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="editAllergyGroup">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          Select
+        </h5>
+      </div>
+      <div class="modal-body">
+
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center"
+          *ngFor="let topping of toppings; index as i">{{topping.name}}
+          <span #toppingCheckboxes>
+            <input [value]="topping._id" [checked]="topping.isSelected" type="checkbox" (change)="setSelectedTopping($event, topping.name)"
+            ></span>
+          </li>
+        </ul>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success"
+        (click)="updateToppingGroup()" data-dismiss="modal"
+        >Update</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
