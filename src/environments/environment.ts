@@ -6,5 +6,6 @@
 export const environment = {
   production: false,
   apiBaseUrl: 'http://localhost:3000/v1/',
-  // apiBaseUrl: 'https://foodinventoryuk.herokuapp.com/v1/'
+  // apiBaseUrl: 'https://foodinventoryuk.herokuapp.com/v1/',
+  cover: 'http://localhost:3000/v1/restaurantService/downloadRestaurantImage?option=COVER&id='
 };

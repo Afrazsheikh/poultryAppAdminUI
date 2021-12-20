@@ -1,1 +1,52 @@
-<p>settings works!</p>
+<div class="app-body">
+  <div class="container" >
+    <form [formGroup]="settingsForm">
+      <div class="row">
+        <div class="col-6">
+          <div>
+            <label for="Entering category">Add WIFI Printer</label>
+            <input type="string" class="form-control"  formControlName="wifiPrinterIP" >
+          </div>
+          <div>
+            <label for="Add Description">Add Port Number</label>
+            <input type="number" class="form-control fas fa-pen" formControlName="wifiPrinterPort">
+          </div>
+          <div>
+            <label for="Add Description">Add Delivery Radius in KM</label>
+            <input type="number" class="form-control fas fa-pen" formControlName="deliveryRadius">
+          </div>
+          <div class="my-3">
+              <button type="button" class="btn btn-success "
+              [disabled]="!settingsForm.get('wifiPrinterIP').valid ||
+              !settingsForm.get('wifiPrinterPort').valid || !settingsForm.get('deliveryRadius').valid"
+              (click)="restaurantSetting()"
+              >Save</button>
+              <button type="button" class="btn btn-secondary"
+              (click)="resetDetails()"
+              >Reset</button>
+          </div>
+        </div>
+
+        <div class="col-6 text-center my-3">
+          <img [src]="coverURL" *ngIf="coverURL" class="img-thumbnail" alt="Cinque Terre">
+          <p>
+            <input type="file" (change)="selectFile($event)">
+          </p>
+          <label>Select your Cover Image</label>
+          <div>
+            <button type="button" class="btn btn-danger my-2"
+            >Upload</button>
+            <button type="button" class="btn btn-secondary"
+            (click)="resetDetails()"
+            >Reset</button>
+          </div>
+        </div>
+
+
+      </div>
+
+
+    </form>
+  </div>
+</div>
+

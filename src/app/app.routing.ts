@@ -58,7 +58,14 @@ export const routes: Routes = [
         path: 'menus',
         loadChildren: () => import('./views/menus/menu.module').then(m => m.MenuModule)
       },
-
+      {
+        path: 'settings',
+        loadChildren: () => import('./views/settings/settings.module').then(m => m.SettingsModule)
+      },
+      {
+        path: 'restaurant-details',
+        loadChildren: () => import('./views/restaurant-details/restaurant-details-module').then(m => m.RestaurantDetailsModule)
+      },
     ]
   },
   { path: '**', component: P404Component }

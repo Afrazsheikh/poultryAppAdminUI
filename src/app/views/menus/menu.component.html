@@ -120,7 +120,7 @@
           </button>
         </div>
 
-        <div class="modal-body">
+        <div class="modal-body item-modal-body">
 
             <form [formGroup]="addingItem">
                 <div class="form-group">
@@ -137,6 +137,11 @@
                     <input id="newItemTopp" readonly type="text" class="form-control" (click)="getToppingGroup()"
                     data-toggle="modal" data-target="#getToppingGroup" placeholder="Select Topping Group">
                 </div>
+                <div class="form-group">
+                  <label for="Select Allergy Group">Select Allergy Group</label>
+                  <input id="newItemAllergy" readonly type="text" class="form-control" (click)="getAllergyGroup()"
+                  data-toggle="modal" data-target="#getAllergyGroup" placeholder="Select Allergy Group">
+              </div>
                 <div class="form-group">
                     <label for="Add Description">Add Description</label>
                     <input type="text" class="form-control" formControlName="description" placeholder="Description">
@@ -517,7 +522,7 @@
       </div>
     </div>
 
-     <!--Model For Add New Tappings/ See all Tapping -->
+     <!--Model For Add New Toppings/ See all Topping -->
      <div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="getTopping">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -559,7 +564,7 @@
         <ul class="list-group">
           <li class="list-group-item d-flex justify-content-between align-items-center"
           *ngFor="let toping of toppings; index as i">{{toping.name}}
-            <span class=""><input class="newToppingGroup"  [value]="toping._id" type="checkbox" (change)="addItemToppingGroup(toping._id, toping.name, i)"
+            <span class=""><input class="newToppingGroup"  [value]="toping._id" type="checkbox" (change)="addItemToppingGroup(toping._id, i)"
             ></span>
           </li>
         </ul>
@@ -706,7 +711,7 @@
           <li class="list-group-item d-flex justify-content-between align-items-center"
           *ngFor="let topping of toppings; index as i">{{topping.name}}
           <span #toppingCheckboxes>
-            <input [value]="topping._id" [checked]="topping.isSelected" type="checkbox" (change)="setSelectedTopping($event, topping.name)"
+            <input [value]="topping._id" [checked]="topping.isSelected" type="checkbox" (change)="setSelectedTopping(i)"
             ></span>
           </li>
         </ul>
@@ -732,7 +737,7 @@
         (click)="deleteItem()" data-dismiss="modal"
         >Delete</button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body item-modal-body">
 
           <form [formGroup]="addingItem">
               <div class="form-group">
@@ -749,6 +754,11 @@
                   <input readonly type="text" class="form-control" (click)="getToppingGroup()"
                   data-toggle="modal" data-target="#getToppingGroup" formControlName="toppingGroup" placeholder="Default Topping Group"[value]="itemToppName">
               </div>
+              <div class="form-group">
+                <label for="Select Allergy Group">Select Allergy Group</label>
+                <input readonly type="text" class="form-control" (click)="getToppingGroup()"
+                data-toggle="modal" data-target="#getAllergyGroup" formControlName="allergyGroup" placeholder="Default Allergy Group"[value]="itemAllergyName">
+            </div>
               <div class="form-group">
                   <label for="Add Description">Add Description</label>
                   <input type="text" class="form-control" formControlName="description" placeholder="Description">
@@ -952,7 +962,7 @@
                   >next</button>
               </div>
               <div class="col">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  <button id="CreateAllergyGroupsClose" type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
               </div>
           </div>
       </div>
@@ -972,7 +982,7 @@
         <ul class="list-group">
           <li class="list-group-item d-flex justify-content-between align-items-center"
           *ngFor="let allergy of allergies; index as i">{{allergy.name}}
-            <span class=""><input class="newAllergyGroup"  [value]="allergy._id" type="checkbox" (change)="addItemAllergyGroup(allergy_id, allergy.name, i) "
+            <span class=""><input class="newAllergyGroup"  [value]="allergy._id" type="checkbox" (change)="addItemAllergyGroup(allergy._id, i) "
             ></span>
           </li>
         </ul>
@@ -1012,15 +1022,16 @@
 
           <ul class="list-group">
             <li class="list-group-item d-flex justify-content-between align-items-center"
-            *ngFor="let option of options; index as i">{{option.name}}
+            *ngFor="let allergy of allergyGroup; index as i">{{allergy.name}}
             <div class="list-group-item d-flex justify-content-center align-items-center">
-              <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#editAllergyGroup"
-              (click)="setSelectedOption(i)">Edit
+              <button (click)="setSelectedAllergyGroup(i)" type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#editAllergyGroup">
+              Edit
               </button>
-              <button class="btn " (click)="deleteOption(option._id)" data-dismiss="modal"><i class="fa fa-trash"></i></button>
+              <button class="btn" (click)="deleteAllergyGroup(allergy._id)" data-dismiss="modal"><i class="fa fa-trash"></i></button>
             </div>
             </li>
           </ul>
+
 
         </div>
         <div class="modal-footer">
@@ -1029,6 +1040,7 @@
       </div>
     </div>
   </div>
+
 
 <!--Model For add new Allergy Group/ My Allergy Group/ Edit-->
 <div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="editAllergyGroup">
@@ -1043,9 +1055,9 @@
 
         <ul class="list-group">
           <li class="list-group-item d-flex justify-content-between align-items-center"
-          *ngFor="let topping of toppings; index as i">{{topping.name}}
-          <span #toppingCheckboxes>
-            <input [value]="topping._id" [checked]="topping.isSelected" type="checkbox" (change)="setSelectedTopping($event, topping.name)"
+          *ngFor="let allergy of allergies; index as i">{{allergy.name}}
+          <span #allergyCheckboxes>
+            <input [value]="allergy._id" [checked]="allergy.isSelected" type="checkbox" (change)="setSelectedAllergy(i)"
             ></span>
           </li>
         </ul>
@@ -1053,9 +1065,34 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-success"
-        (click)="updateToppingGroup()" data-dismiss="modal"
+        (click)="updateAllergyGroup()" data-dismiss="modal"
         >Update</button>
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Model For Get Allergy Group-->
+<div class="modal" tabindex="-1" role="dialog" data-backdrop="static" id="getAllergyGroup">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Select Allergy Group</h5>
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Default</button>
+      </div>
+      <div class="modal-body">
+
+        <ul class="list-group">
+          <li class="list-group-item d-flex justify-content-between align-items-center"
+          *ngFor="let allergy of allergyGroup">{{allergy.name}}
+          <span class=""><input [value]="allergy._id" type="radio" (change)="setItemAllergy($event, allergy.name)"
+            name="topping"></span></li>
+        </ul>
+
+      </div>
+      <div class="modal-footer">
+        <button id="allergyCloseButton" type="button" class="btn btn-secondary" data-dismiss="modal">Back</button>
       </div>
     </div>
   </div>

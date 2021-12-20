@@ -45,6 +45,7 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { SettingsComponent } from './views/settings/settings.component';
+import { RestaurantDetailsComponent } from './views/restaurant-details/restaurant-details.component';
 
 @NgModule({
   imports: [
@@ -72,7 +73,8 @@ import { SettingsComponent } from './views/settings/settings.component';
     P404Component,
     P500Component,
     LoginComponent,
-    SettingsComponent
+    SettingsComponent,
+    RestaurantDetailsComponent
     ],
   providers: [
     {

@@ -24,6 +24,7 @@ export class MenuComponent implements OnInit {
   item: any;
   itemCatName: any = "";
   itemToppName: any = "";
+  itemAllergyName: any = "";
   itemOptionName: any = "";
   toppGroup: any = "";
   addingCategory: any;
@@ -43,6 +44,8 @@ export class MenuComponent implements OnInit {
   editingOption: any;
   editingTopping: any;
   editingToppingGroup: any;
+  editingAllergy: any;
+  editingAllergyGroup: any;
   addingAllergy: any;
   addingAllergyGroup: any;
   isCategoryFetched: boolean;
@@ -52,7 +55,7 @@ export class MenuComponent implements OnInit {
   value: any;
   selectedToppingIds: any[] = [];
   selectedAllergyIds: any[] = [];
-  editingAllergy: any;
+
 
 
   constructor(private menuService: MenuService,private router: Router)
@@ -70,10 +73,15 @@ export class MenuComponent implements OnInit {
 
   this.addingToppingGroup = new FormGroup({"name": new FormControl(null, [Validators.required]),
                                            "toppings": new FormControl([])});
+  this.addingAllergy = new FormGroup({"name": new FormControl(null, [Validators.required]),
+                                      "description": new FormControl(null) });
+
+  this.addingAllergyGroup = new FormGroup({"name": new FormControl(null, [Validators.required])});
 
   this.addingItem = new FormGroup({"name": new FormControl(null,[Validators.required]),
                                  "category": new FormControl(null,[Validators.required]),
                                  "toppingGroup": new FormControl(null,[Validators.required]),
+                                 "allergyGroup": new FormControl(null,[Validators.required]),
                                  "options": new FormControl([],[Validators.required]),
                                  "price": new FormControl(null,[Validators.required]),
                                  "description": new FormControl(null,[Validators.required])
@@ -87,11 +95,6 @@ export class MenuComponent implements OnInit {
 
   this.editingTopping = new FormGroup({"name": new FormControl(null, [Validators.required]),
                                       "price": new FormControl(null, [Validators.required]) });
-
-  this.addingAllergy = new FormGroup({"name": new FormControl(null, [Validators.required]),
-                                      "description": new FormControl(null) });
-
-  this.addingAllergyGroup = new FormGroup({"name": new FormControl(null, [Validators.required])});
 
   this.editingAllergy = new FormGroup({"name": new FormControl(null, [Validators.required]),
                                       "description": new FormControl(null) });
@@ -157,7 +160,7 @@ export class MenuComponent implements OnInit {
   }
 
   getAllergyGroup() {
-    // document.getElementById("getAllergyGroup").classList.add("getCategoriesModal");
+    document.getElementById("getAllergyGroup").classList.add("getCategoriesModal");
     this.menuService.getAllergyGroup(this.restId).subscribe((response) => {
       console.log(response);
       if(response.success) {
@@ -350,12 +353,12 @@ export class MenuComponent implements OnInit {
    addAllergyGroup() {
     this.isLoading = true;
     this.addingAllergyGroup.patchValue({allergies: this.selectedAllergyIds});
-    console.log(this.addingToppingGroup.value);
-    this.menuService.addToppingGroup(this.restId, this.addingToppingGroup.value).subscribe((response) => {
+    console.log(this.addingAllergyGroup.value);
+    this.menuService.addAllergyGroup(this.restId, this.addingAllergyGroup.value).subscribe((response) => {
       if(response.success) {
         this.isLoading = false;
-        document.getElementById("CreateToppingGroupsClose").click();
-        this.addingToppingGroup.patchValue({name: ''});
+        document.getElementById("CreateAllergyGroupsClose").click();
+        this.addingAllergyGroup.patchValue({name: ''});
         this.isCategoryFetched = false;
         this.getCategories();
         console.log(response);
@@ -484,6 +487,22 @@ deleteToppingGroup(id){
   })
 }
 
+deleteAllergyGroup(id){
+  console.log(id);
+  this.menuService.deleteAllergyGroup(id).subscribe((response) => {
+    if(response.success) {
+      this.isCategoryFetched = false;
+      this.getCategories();
+      console.log("Successfully Deleted");
+    }
+
+  },
+  (err) => {
+
+    console.log(err);
+  })
+}
+
 updateCategory() {
 
   console.log(this.editingCategory.value)
@@ -568,6 +587,23 @@ updateToppingGroup() {
   })
 }
 
+updateAllergyGroup() {
+
+  console.log(this.editingOption.value)
+  this.menuService.updateAllergyGroup(this.selectedAllergyGroup._id, this.editingAllergyGroup.value).subscribe((response) => {
+    console.log(response);
+    if(response.success) {
+      this.isCategoryFetched = false;
+      this.getAllergyGroup();
+    }
+
+   },
+   (err) => {
+
+    console.log(err);
+  })
+}
+
    setSelectedCategory(index) {
 
      this.selectedCategory = this.categories[index];
@@ -581,7 +617,7 @@ updateToppingGroup() {
   }
 
   setSelectedTopping(index) {
-    this.selectedTopping = this.toppingGroup[index];
+    this.selectedTopping = this.toppings[index];
     console.log(this.selectedTopping)
   }
 
@@ -593,7 +629,7 @@ updateToppingGroup() {
   }
 
   setSelectedAllergy(index) {
-    this.selectedAllergy = this.allergyGroup[index];
+    this.selectedAllergy = this.allergies[index];
     console.log(this.selectedAllergy)
   }
 
@@ -665,6 +701,16 @@ setCheckedAllergies() {
     document.getElementById("toppingCloseButton").click();
   }
 
+  setItemAllergy(event, allergyName){
+    let itemAllergy: any = document.getElementById('newItemAllergy');
+    itemAllergy.value = allergyName;
+    this.itemAllergyName = allergyName;
+    this.addingItem.patchValue({allergyGroup: event.target.value});
+    console.log(event.target.value);
+    console.log(allergyName);
+    document.getElementById("allergyCloseButton").click();
+  }
+
   setItemOption(event, optionName){
     let itemOption: any = document.getElementById('newItemOption');
     itemOption.value = optionName;
@@ -694,7 +740,7 @@ setCheckedAllergies() {
   addItemAllergyGroup(allergyGroupId, index){
 
     let allergyGroup: any = document.getElementsByClassName('newAllergyGroup')[index] as HTMLInputElement;
-    console.log(allergyGroup.checked);
+    console.log(allergyGroup);
     if(allergyGroup.checked == true){
       this.selectedAllergyIds.push(allergyGroupId);
     }

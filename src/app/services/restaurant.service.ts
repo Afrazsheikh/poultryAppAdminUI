@@ -44,4 +44,26 @@ export class RestaurantService {
   {
     return this.httpClient.post(environment.apiBaseUrl + 'adminService/resetPassword', owner, this.httpOptions);
   }
+
+  restaurantSetting(id, settingDetails): Observable<any>
+  {
+    return this.httpClient.put(environment.apiBaseUrl + 'adminService/restSetting/' + id, settingDetails, this.httpOptions);
+  }
+
+  downloadRestaurantImage(id): Observable<any>
+  {
+    return this.httpClient.get(environment.apiBaseUrl + 'restauranmtService/downloadRestaurantImage/' + id, this.httpOptions);
+  }
+
+  addRestaurantImage(): Observable<any>
+  {
+    return this.httpClient.put(environment.apiBaseUrl + 'restaurantService/addRestaurantImage', this.httpOptions);
+  }
+
+  getRestaurantProfile(id): Observable<any>
+  {
+    return this.httpClient.get(environment.apiBaseUrl + 'restaurantService/profile/' + id, this.httpOptions);
+  }
+
+
 }
