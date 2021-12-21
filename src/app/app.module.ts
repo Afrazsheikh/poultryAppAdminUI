@@ -46,6 +46,7 @@ import { ChartsModule } from 'ng2-charts';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { SettingsComponent } from './views/settings/settings.component';
 import { RestaurantDetailsComponent } from './views/restaurant-details/restaurant-details.component';
+import { DiscountComponent } from './views/discount/discount.component';
 
 @NgModule({
   imports: [
@@ -74,7 +75,8 @@ import { RestaurantDetailsComponent } from './views/restaurant-details/restauran
     P500Component,
     LoginComponent,
     SettingsComponent,
-    RestaurantDetailsComponent
+    RestaurantDetailsComponent,
+    DiscountComponent
     ],
   providers: [
     {

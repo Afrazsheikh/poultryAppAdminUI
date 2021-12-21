@@ -1,1 +1,65 @@
-<p>restaurant-details works!</p>
+<div class="app-body">
+  <div class="container" >
+    <form [formGroup]="restaurantDetailsForm">
+      <div class="row">
+        <div class="col-6">
+          <div>
+            <label>Restaurant Name</label>
+            <input type="string" class="form-control" formControlName="restaurantName" >
+          </div>
+          <div>
+            <label>Full Address</label>
+            <input type="string" class="form-control" formControlName="location">
+          </div>
+          <div>
+            <label>Phone Number</label>
+            <input type="string" class="form-control" formControlName="phoneNumber">
+          </div>
+          <div>
+            <label>Email Address</label>
+            <input type="string" class="form-control" formControlName="restEmail">
+          </div>
+          <div>
+            <label>VAT Number</label>
+            <input type="string" class="form-control" formControlName="vatNumber">
+          </div>
+          <div>
+            <label>Collection Time</label>
+            <input type="string" class="form-control" formControlName="collectionTime">
+          </div>
+          <div class="my-3">
+              <button type="button" class="btn btn-success"
+              [disabled]="!restaurantDetailsForm.get('restaurantName').valid ||
+              !restaurantDetailsForm.get('location').valid || !restaurantDetailsForm.get('phoneNumber').valid ||
+              !restaurantDetailsForm.get('restEmail').valid || !restaurantDetailsForm.get('vatNumber').valid ||
+              ! restaurantDetailsForm.get('collectionTime').valid"
+              (click)="addRestaurantDetails()"
+              >Save</button>
+              <button type="button" class="btn btn-secondary"
+              (click)="resetDetails()"
+              >Reset</button>
+          </div>
+        </div>
+
+        <div class="col-6 text-center my-3">
+          <img [src]="logoURL" *ngIf="logoURL" class="img-thumbnail" alt="Cinque Terre">
+          <p>
+            <input type="file" (change)="selectFile($event)">
+          </p>
+          <label>Select your Brand Logo</label>
+          <div>
+            <button type="button" class="btn btn-danger my-2"
+            >Upload</button>
+            <button type="button" class="btn btn-secondary"
+            (click)="resetImage()"
+            >Reset</button>
+          </div>
+        </div>
+
+      </div>
+
+    </form>
+  </div>
+</div>
+
+

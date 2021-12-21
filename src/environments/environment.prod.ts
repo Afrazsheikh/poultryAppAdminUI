@@ -2,5 +2,6 @@ export const environment = {
   production: true,
   //apiBaseUrl: 'https://foodinventoryuk.herokuapp.com/v1/'
   apiBaseUrl: 'https://foodinventorygerman.herokuapp.com/v1/',
-  cover: 'https://foodinventorygerman.herokuapp.com/v1/restaurantService/downloadRestaurantImage?option=COVER&id='
+  cover: 'https://foodinventorygerman.herokuapp.com/v1/restaurantService/downloadRestaurantImage?option=COVER&id=',
+  logo: 'https://foodinventorygerman.herokuapp.com/v1/restaurantService/downloadRestaurantImage?option=ICON&id='
 };

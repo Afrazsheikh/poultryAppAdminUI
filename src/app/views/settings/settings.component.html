@@ -4,16 +4,16 @@
       <div class="row">
         <div class="col-6">
           <div>
-            <label for="Entering category">Add WIFI Printer</label>
+            <label>Add WIFI Printer</label>
             <input type="string" class="form-control"  formControlName="wifiPrinterIP" >
           </div>
           <div>
-            <label for="Add Description">Add Port Number</label>
-            <input type="number" class="form-control fas fa-pen" formControlName="wifiPrinterPort">
+            <label>Add Port Number</label>
+            <input type="number" class="form-control" formControlName="wifiPrinterPort">
           </div>
           <div>
-            <label for="Add Description">Add Delivery Radius in KM</label>
-            <input type="number" class="form-control fas fa-pen" formControlName="deliveryRadius">
+            <label>Add Delivery Radius in KM</label>
+            <input type="number" class="form-control" formControlName="deliveryRadius">
           </div>
           <div class="my-3">
               <button type="button" class="btn btn-success "
@@ -37,7 +37,7 @@
             <button type="button" class="btn btn-danger my-2"
             >Upload</button>
             <button type="button" class="btn btn-secondary"
-            (click)="resetDetails()"
+            (click)="resetImage()"
             >Reset</button>
           </div>
         </div>

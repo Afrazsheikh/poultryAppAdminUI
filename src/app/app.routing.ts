@@ -66,6 +66,10 @@ export const routes: Routes = [
         path: 'restaurant-details',
         loadChildren: () => import('./views/restaurant-details/restaurant-details-module').then(m => m.RestaurantDetailsModule)
       },
+      {
+        path: 'discount',
+        loadChildren: () => import('./views/discount/discount.module').then(m => m.DiscountModule)
+      },
     ]
   },
   { path: '**', component: P404Component }

@@ -64,6 +64,14 @@ export class RestaurantService {
   {
     return this.httpClient.get(environment.apiBaseUrl + 'restaurantService/profile/' + id, this.httpOptions);
   }
+  ownerEditProfile(id, data): Observable<any>
+  {
+    return this.httpClient.put(environment.apiBaseUrl + 'adminService/ownerEditProfile/' + id, data, this.httpOptions);
+  }
+  updateRestaurantDiscount(id, discount): Observable<any>
+  {
+    return this.httpClient.put(environment.apiBaseUrl + 'adminService/updateRestaurantDiscount/' + id, discount, this.httpOptions);
+  }
 
 
 }

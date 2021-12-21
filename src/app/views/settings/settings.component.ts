@@ -22,19 +22,19 @@ export class SettingsComponent implements OnInit {
 
   constructor(private restaurantService: RestaurantService,private router: Router) {
 
-    this.setDetails();
+    this.getDetails();
 
 
     this.settingsForm = new FormGroup({"wifiPrinterIP": new FormControl(null, [Validators.required]),
-                                  "wifiPrinterPort": new FormControl(null,  [Validators.required]),
-                                  "deliveryRadius": new FormControl(null,  [Validators.required])});
+                                      "wifiPrinterPort": new FormControl(null, [Validators.required]),
+                                      "deliveryRadius": new FormControl(null, [Validators.required])});
    }
 
   ngOnInit(): void {
     this.originalCover = this.coverURL = environment.cover + this.restId;
   }
 
-  setDetails()
+  getDetails()
   {
     this.restaurantService.getRestaurantProfile(this.restId).subscribe((response) => {
       console.log(response);

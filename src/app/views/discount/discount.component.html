@@ -1,0 +1,42 @@
+<div class="app-body">
+  <div class="container" >
+    <form [formGroup]="discountForm">
+      <div class="row">
+        <div class="col-6">
+          <div>
+            <label>Add Delivery Discount</label>
+            <input type="number" class="form-control"  formControlName="deliveryDiscount" >
+          </div>
+          <div>
+            <label>Add Collection Discount</label>
+            <input type="number" class="form-control" formControlName="collectionDiscount">
+          </div>
+
+          <div class="my-3">
+              <button type="button" class="btn btn-success "
+              >Add</button>
+              <button type="button" class="btn btn-secondary"
+              >cancel</button>
+          </div>
+        </div>
+
+        <div class="col-6  my-2 ">
+          <div>
+              <button type="button" class="btn btn-danger my-4"
+              >Exclude</button>
+          </div>
+          <div>
+              <button type="button" class="btn btn-danger"
+              >Exclude</button>
+          </div>
+        </div>
+
+
+      </div>
+
+
+    </form>
+  </div>
+</div>
+
+
