@@ -70,6 +70,10 @@ export const routes: Routes = [
         path: 'discount',
         loadChildren: () => import('./views/discount/discount.module').then(m => m.DiscountModule)
       },
+      {
+        path: 'instant-action',
+        loadChildren: () => import('./views/instant-action/instant-action.module').then(m => m.InstantActionModule)
+      },
     ]
   },
   { path: '**', component: P404Component }

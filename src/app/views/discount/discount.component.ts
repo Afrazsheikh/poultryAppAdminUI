@@ -16,7 +16,7 @@ export class DiscountComponent implements OnInit {
   restId: any = localStorage.getItem('restId');
 
   constructor(private restaurantService: RestaurantService,private router: Router) {
-    
+    this.getRestaurantDiscount();
 
     this.discountForm = new FormGroup({"deliveryDiscount": new FormControl(null, [Validators.required]),
                                        "collectionDiscount": new FormControl(null,  [Validators.required])});
@@ -25,22 +25,40 @@ export class DiscountComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  updateRestaurantDiscount (){
+  getRestaurantDiscount(){
     console.log(this.restId);
 
-    this.restaurantService.updateRestaurantDiscount(this.restId, this.discount).subscribe((response) => {
+    this.restaurantService.getRestaurantProfile(this.restId).subscribe((response) => {
       console.log(response);
       if(response.success) {
         this.details = response.data;
 
-        this.discountForm.patchValue({"deliveryDiscount":this.details.restaurantName,
-                                      "collectionDiscount": this.details.location});
+        this.discountForm.patchValue({"deliveryDiscount":this.details.deliveryDiscount,
+                                      "collectionDiscount": this.details.collectionDiscount});
         console.log("Patched value....." +  this.discountForm.value);
         console.log(this.details);
       }
 
      },
      (err) => {
+      console.log(err);
+    })
+  }
+
+  updateRestaurantDiscount(){
+
+    console.log(this.discountForm.value);
+
+    this.restaurantService.updateRestaurantDiscount(this.restId, this.discountForm.value).subscribe((response) => {
+      console.log(response);
+      if(response.success) {
+        this.details = response.data;
+        console.log(this.details);
+      }
+
+     },
+     (err) => {
+
       console.log(err);
     })
   }

@@ -1,0 +1,20 @@
+<div class="app-body">
+  <div class="container">
+    <div class="text-center">
+      <div>
+        <label> <b> Select Instant Action</b></label>
+      </div>
+      <div *ngIf="isLoading" class="col text-center">
+        <div class="spinner-border text-danger" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+      </div>
+      <div *ngIf="!isLoading">
+          <mat-button-toggle-group name="fontStyle" [value]="status ? 'open' : 'close'" (change)="setStatus()">
+            <mat-button-toggle [ngClass]="status ? 'open-order-btn' : ''" value="open">Open Online Ordering</mat-button-toggle>
+            <mat-button-toggle [ngClass]="!status ? 'close-order-btn' : ''" value="close">Close Online Ordering</mat-button-toggle>
+          </mat-button-toggle-group>
+      </div>
+    </div>
+  </div>
+</div>

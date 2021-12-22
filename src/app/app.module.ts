@@ -47,6 +47,9 @@ import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
 import { SettingsComponent } from './views/settings/settings.component';
 import { RestaurantDetailsComponent } from './views/restaurant-details/restaurant-details.component';
 import { DiscountComponent } from './views/discount/discount.component';
+import { InstantActionComponent } from './views/instant-action/instant-action.component';
+import { MatButtonToggle, MatButtonToggleGroup, MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatButtonModule } from '@angular/material/button';
 
 @NgModule({
   imports: [
@@ -67,6 +70,8 @@ import { DiscountComponent } from './views/discount/discount.component';
     ChartsModule,
     IconModule,
     IconSetModule.forRoot(),
+    MatButtonModule,
+    MatButtonToggleModule
   ],
   declarations: [
     AppComponent,
@@ -76,7 +81,8 @@ import { DiscountComponent } from './views/discount/discount.component';
     LoginComponent,
     SettingsComponent,
     RestaurantDetailsComponent,
-    DiscountComponent
+    DiscountComponent,
+    InstantActionComponent
     ],
   providers: [
     {

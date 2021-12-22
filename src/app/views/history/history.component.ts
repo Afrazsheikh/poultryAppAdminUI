@@ -22,21 +22,15 @@ export class HistoryComponent implements OnInit {
   totalSalesDays: any[] = [];
   totalDeclineDays: any[] = [];
 
-  totalOrders: Array<any> = [
-    {data: [], label: 'Total Orders'}
-  ];
-
-  totalSales: Array<any> = [
-    {data: [], label: 'Total Sales'}
-  ];
-
-  totalDecline: Array<any> = [
+  orderGraphDataset: Array<any> = [
+    {data: [], label: 'Total Orders'},
+    {data: [], label: 'Total Sales'},
     {data: [], label: 'Declined Orders'}
   ];
 
   lineChartLabels: Array<any>;
 
-  lineChartType = 'bar';
+  lineChartType = 'line';
 
   config = {
     /*title: {
@@ -146,13 +140,11 @@ export class HistoryComponent implements OnInit {
         this.totalDeclineMonths.push(month.totalOrders);
       });
 
-      this.totalOrders[0].data = this.totalOrderMonths; 
-      this.totalSales[0].data = this.totalSalesMonths;
-      this.totalDecline[0].data = this.totalDeclineMonths;
+      this.orderGraphDataset[0].data = this.totalOrderMonths;
+      this.orderGraphDataset[1].data = this.totalSalesMonths;
+      this.orderGraphDataset[2].data = this.totalDeclineMonths;
 
       console.log(this.totalOrderMonths);
-
-      console.log(this.totalOrders);
 
     },
 
@@ -202,17 +194,19 @@ export class HistoryComponent implements OnInit {
     {
       this.lineChartLabels = this.weekDays;
 
-      this.totalOrders[0].data = this.totalOrderDays; 
-      this.totalSales[0].data = this.totalSalesDays;
-      this.totalDecline[0].data = this.totalDeclineDays;
+      this.orderGraphDataset[0].data = this.totalOrderDays;
+      this.orderGraphDataset[1].data = this.totalSalesDays;
+      this.orderGraphDataset[2].data = this.totalDeclineDays;
+
     }
     else if(event.value == 'months')
     {
       this.lineChartLabels = this.months;
 
-      this.totalOrders[0].data = this.totalOrderMonths; 
-      this.totalSales[0].data = this.totalSalesMonths;
-      this.totalDecline[0].data = this.totalDeclineMonths;
+      this.orderGraphDataset[0].data = this.totalOrderMonths;
+      this.orderGraphDataset[1].data = this.totalSalesMonths;
+      this.orderGraphDataset[2].data = this.totalDeclineMonths;
+
     }
   }
 }

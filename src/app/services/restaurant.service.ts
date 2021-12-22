@@ -72,6 +72,10 @@ export class RestaurantService {
   {
     return this.httpClient.put(environment.apiBaseUrl + 'adminService/updateRestaurantDiscount/' + id, discount, this.httpOptions);
   }
+  updateRestaurantStatus(id, status): Observable<any>
+  {
+    return this.httpClient.put(environment.apiBaseUrl + 'adminService/updateRestaurantStatus/' + id, status, this.httpOptions);
+  }
 
 
 }

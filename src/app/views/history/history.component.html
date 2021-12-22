@@ -1,12 +1,10 @@
 <div class="app-body">
   <div class="container">
     <div class="row">
-      <div class="col-md-12 text-center pb-5">
+      <div class="col-md-12 text-center pb-4">
         <div>
           <h4>Filter By</h4>
         </div>
-
-
 
         <div >
           <mat-button-toggle-group name="fontStyle" aria-label="Font Style"(change)="setFilter($event)">
@@ -17,48 +15,17 @@
 
       </div>
 
-      <div class="col-md-6">
-        <div class="chart-wrapper">
-          <div class="chart-container">
+      <div class="col">
+          <div >
             <canvas baseChart class="chart canvas-container"
-              [datasets]="totalOrders"
+              [datasets]="orderGraphDataset"
               [labels]="lineChartLabels"
               [colors]="chartColors"
               [options]="config"
               [chartType]="lineChartType"
-              ></canvas>
+            ></canvas>
           </div>
-        </div>
       </div>
-
-      <div class="col-md-6">
-        <div class="chart-wrapper">
-          <div class="chart-container">
-            <canvas baseChart class="chart canvas-container"
-              [datasets]="totalSales"
-              [labels]="lineChartLabels"
-              [legend]="true"
-              [colors]="chartColors"
-              [options]="config"
-              [chartType]="lineChartType"></canvas>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-6">
-        <div class="chart-wrapper">
-          <div class="chart-container">
-            <canvas baseChart class="chart canvas-container"
-              [datasets]="totalDecline"
-              [labels]="lineChartLabels"
-              [colors]="chartColors"
-              [options]="config"
-              [chartType]="lineChartType"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-
 
     <div class="row pt-5" >
 
@@ -81,7 +48,7 @@
       </div>
 
       <div class="col-md-3">
-        <div class="card bg-primary res-card">
+        <div class="card bg-primary res-card" routerLink="/home/instant-action">
           <div class="card-body text-center">
             <h1 class="card-text"><i class="fas fa-hourglass-half"></i></h1>
             <p class="card-text">Instant Action</p>
