@@ -74,6 +74,14 @@ export const routes: Routes = [
         path: 'instant-action',
         loadChildren: () => import('./views/instant-action/instant-action.module').then(m => m.InstantActionModule)
       },
+      {
+        path: 'order',
+        loadChildren: () => import('./views/order/order.module').then(m => m.OrderModule)
+      },
+      {
+        path: 'declined-order',
+        loadChildren: () => import('./views/declined-order/declined-order.module').then(m => m.DeclinedOrderModule)
+      },
     ]
   },
   { path: '**', component: P404Component }

@@ -50,6 +50,23 @@ import { DiscountComponent } from './views/discount/discount.component';
 import { InstantActionComponent } from './views/instant-action/instant-action.component';
 import { MatButtonToggle, MatButtonToggleGroup, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatButtonModule } from '@angular/material/button';
+import { OrderComponent } from './views/order/order.component';
+import { DeclinedOrderComponent } from './views/declined-order/declined-order.component';
+import { FormsModule } from '@angular/forms';
+import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
+import interactionPlugin from '@fullcalendar/interaction';
+import { MatCardModule } from '@angular/material/card';
+import { MatDivider, MatDividerModule } from '@angular/material/divider';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
+import {MatInputModule} from '@angular/material/input';
+
+FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+  dayGridPlugin,
+  interactionPlugin
+]);
+
 
 @NgModule({
   imports: [
@@ -71,7 +88,16 @@ import { MatButtonModule } from '@angular/material/button';
     IconModule,
     IconSetModule.forRoot(),
     MatButtonModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    FormsModule,
+    FormsModule,
+    FullCalendarModule,
+    MatCardModule,
+    MatDividerModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule,
+
   ],
   declarations: [
     AppComponent,
@@ -82,7 +108,9 @@ import { MatButtonModule } from '@angular/material/button';
     SettingsComponent,
     RestaurantDetailsComponent,
     DiscountComponent,
-    InstantActionComponent
+    InstantActionComponent,
+    OrderComponent,
+    DeclinedOrderComponent
     ],
   providers: [
     {

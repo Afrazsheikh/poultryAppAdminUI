@@ -76,6 +76,19 @@ export class RestaurantService {
   {
     return this.httpClient.put(environment.apiBaseUrl + 'adminService/updateRestaurantStatus/' + id, status, this.httpOptions);
   }
+  getOrders(id, date = null): Observable<any>
+  {
+    if(date) {
+      return this.httpClient.get(environment.apiBaseUrl + 'orderService/getOrders?restId='+ id + '&date=' + date, this.httpOptions);
+    }
+    else {
+      return this.httpClient.get(environment.apiBaseUrl + 'orderService/getOrders?restId='+ id, this.httpOptions);
+    }
+  }
+  getOrderHistory(id): Observable<any>
+  {
+    return this.httpClient.get(environment.apiBaseUrl + 'orderService/orderHistory?restId='+id, this.httpOptions);
+  }
 
 
 }

@@ -1,0 +1,63 @@
+<div class="app-body">
+  <div class="container">
+
+
+      <div class="text-center">
+          <mat-button-toggle-group name="fontStyle">
+            <mat-button-toggle [checked]="segmantCheck" (click)="getOrders()">Today</mat-button-toggle>
+            <mat-button-toggle (click)="getOrderHistory()"
+            >History
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+      </div>
+
+      <div class="row pt-3" *ngIf="activeSegment == 'Today'">
+
+        <div *ngFor="let order of ordersData" class="col-12">
+          <mat-card class="text-center">
+            <div class="row text-left">
+              <div class="col">Order : {{order.orderNumber}}</div>
+              <div class="col text-right">{{order.orderDateTime}}</div>
+            </div>
+            <mat-divider></mat-divider>
+          <div class="row">
+            <div class="col text-left">
+              <div >Order Number : {{order.orderNumber}}</div>
+              <div >Order Type : {{order.deliveryType}}</div>
+              <div >Delivery Time : {{order.orderTime}}</div>
+            </div>
+            <mat-divider [vertical]="true"></mat-divider>
+            <div class="col text-left">
+              <div >Name : {{order.userDetails.firstName + order.userDetails.lastName}}</div>
+              <div >Address : {{order.deliveryAddress}}</div>
+              <div >Contect: {{order.userDetails.contact}}</div>
+            </div>
+            <mat-divider [vertical]="true"></mat-divider>
+            <div class="col text-left">
+              <div >Amount : {{order.totalAmount}}</div>
+              <div >payment Mode : {{order.paymentMode}}</div>
+            </div>
+          </div>
+          </mat-card>
+        </div>
+      </div>
+
+      <div *ngIf="activeSegment == 'History'">
+      <div class="text-right pt-3">
+        <mat-form-field  appearance="fill">
+          <mat-label>Choose a date (MM/DD/YYYY)</mat-label>
+          <input matInput [matDatepicker]="picker" [min]="minDate" [max]="maxDate" (dateChange)="setCalenderView($event)">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+
+      <full-calendar #fullCalendar [options]="calendarOptions">
+      </full-calendar>
+
+
+      </div>
+
+  </div>
+</div>
+
