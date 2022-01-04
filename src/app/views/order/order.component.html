@@ -4,7 +4,7 @@
 
       <div class="text-center">
           <mat-button-toggle-group name="fontStyle">
-            <mat-button-toggle [checked]="segmantCheck" (click)="getOrders()">Today</mat-button-toggle>
+            <mat-button-toggle [checked]="segmantCheck" (click)="getOrders()">{{displayDate}}</mat-button-toggle>
             <mat-button-toggle (click)="getOrderHistory()"
             >History
             </mat-button-toggle>

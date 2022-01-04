@@ -16,10 +16,12 @@ export class OrderComponent implements OnInit, AfterViewChecked {
   data: any;
   activeSegment = 'Today';
   ordersData: any;
-  date: any = moment();
+  date = moment();
   minDate: any = '1990-01-01';
   maxDate: any = new Date(this.date.year(), this.date.month(), this.date.date());
-  calendarOptions: any;
+  calendarOptions: CalendarOptions;
+  selectedDate:any = null;
+  displayDate: any = 'Today';
 
   @ViewChild('fullCalendar') fullCalendar: FullCalendarComponent;
   calendar: Calendar;
@@ -34,21 +36,17 @@ export class OrderComponent implements OnInit, AfterViewChecked {
    }
 
   ngOnInit(): void {
+    const endDate = this.date.add(1, 'days');
+    this.calendarOptions = {
+      initialView: 'dayGridMonth',
+      validRange: {
+        start: '1990-01-01',
+        end: new Date(endDate.year(), endDate.month(), endDate.date()),
+      },
+      dateClick: this.dateClick.bind(this),
   }
 
-  CalendarOptions = {
-    initialView: 'dayGridMonth',
-    validRange: {
-      start: '1990-01-01',
-      end: new Date(this.date.year(), this.date.month(), this.date.add(1, 'days').date())
-    },
-    //dateClick: this.dateClick(this)
-
   };
-
-  /* ngAfterViewInit() {
-    this.calendarApi = this.calendarComponent.getApi();
-  } */
 
   ngAfterViewChecked() {
     if(this.fullCalendar) {
@@ -59,10 +57,11 @@ export class OrderComponent implements OnInit, AfterViewChecked {
   getOrders(){
 
     this.activeSegment = 'Today';
-    this.restaurantService.getOrders(this.restId).subscribe((response) => {
+    this.restaurantService.getOrders(this.restId, this.selectedDate).subscribe((response) => {
       console.log(response);
       if(response.success) {
         this.ordersData = response.data;
+        this.selectedDate = null;
         console.log(response);
       }
 
@@ -81,6 +80,8 @@ export class OrderComponent implements OnInit, AfterViewChecked {
         this.data = response.data;
         this.segmantCheck = false;
         console.log(this.data);
+
+        this.mapCalendarDates(this.data);
       }
 
      },
@@ -98,7 +99,6 @@ export class OrderComponent implements OnInit, AfterViewChecked {
   }
 
   eventClick(model) {
-    //console.log(model.target.ariaLabel);
 
      console.log(this.calendar.getDate());
  }
@@ -107,6 +107,22 @@ export class OrderComponent implements OnInit, AfterViewChecked {
  {
   console.log(event);
   this.segmantCheck = true;
+  this.selectedDate = event.dateStr;
   this.activeSegment = 'Today';
+  this.displayDate = 'Selected (' + this.selectedDate + ')';
+  this.getOrders();
+ }
+
+ mapCalendarDates(data)
+ {
+   const calEvents: any[] = [];
+
+   data.forEach(date => {
+    calEvents.push(
+      { title: date.totalOrderAmount, date: date._id },
+    )
+   });
+
+   this.calendarOptions.events = calEvents;
  }
 }
