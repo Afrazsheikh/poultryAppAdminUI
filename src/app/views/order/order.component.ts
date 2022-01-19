@@ -26,7 +26,7 @@ export class OrderComponent implements OnInit, AfterViewChecked {
   @ViewChild('fullCalendar') fullCalendar: FullCalendarComponent;
   calendar: Calendar;
   segmantCheck: any = true;
-
+  isLoading: boolean = false;
 
   constructor(private restaurantService: RestaurantService,private router: Router) {
 
@@ -55,10 +55,11 @@ export class OrderComponent implements OnInit, AfterViewChecked {
   }
 
   getOrders(){
-
+    this.isLoading = true;
     this.activeSegment = 'Today';
     this.restaurantService.getOrders(this.restId, this.selectedDate).subscribe((response) => {
       console.log(response);
+      this.isLoading = false
       if(response.success) {
         this.ordersData = response.data;
         this.selectedDate = null;
@@ -72,10 +73,11 @@ export class OrderComponent implements OnInit, AfterViewChecked {
   }
 
   getOrderHistory(){
-
+    this.isLoading = true;
     this.activeSegment = 'History';
     this.restaurantService.getOrderHistory(this.restId).subscribe((response) => {
       console.log(response);
+      this.isLoading = false;
       if(response.success) {
         this.data = response.data;
         this.segmantCheck = false;

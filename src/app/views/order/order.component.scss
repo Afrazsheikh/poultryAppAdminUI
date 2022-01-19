@@ -1,0 +1,26 @@
+.accepted {
+    background-color: #21f021;
+    color: white;
+    padding: 8px 10px;
+    margin-top: 15px;
+    border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+}
+
+.declined {
+    background-color: rgb(255, 64, 64);
+    color: white;
+    padding: 8px 10px;
+    margin-top: 15px;
+    border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+}
+
+.pending {
+    background-color: rgb(255, 180, 41);
+    color: white;
+    padding: 8px 10px;
+    margin-top: 15px;
+    border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+}

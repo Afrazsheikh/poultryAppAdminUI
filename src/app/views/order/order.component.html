@@ -1,7 +1,11 @@
+<div id="overlay" *ngIf="isLoading">
+  <div class="overlay-content">
+      <div class="spinner-border"></div>
+  </div>
+</div>
 <div class="app-body">
   <div class="container">
-
-
+     
       <div class="text-center">
           <mat-button-toggle-group name="fontStyle">
             <mat-button-toggle [checked]="segmantCheck" (click)="getOrders()">{{displayDate}}</mat-button-toggle>
@@ -11,16 +15,16 @@
           </mat-button-toggle-group>
       </div>
 
-      <div class="row pt-3" *ngIf="activeSegment == 'Today'">
+      <div class="row pt-3" *ngIf="activeSegment == 'Today' && !isLoading">
 
         <div *ngFor="let order of ordersData" class="col-12">
           <mat-card class="text-center">
-            <div class="row text-left">
-              <div class="col">Order : {{order.orderNumber}}</div>
-              <div class="col text-right">{{order.orderDateTime}}</div>
+            <div class="mt-card-header row text-left">
+              <div class="col-lg-6">Order : {{order.orderNumber}}</div>
+              <div class="col-lg-6 text-right">{{order.orderDateTime}}</div>
             </div>
-            <mat-divider></mat-divider>
-          <div class="row">
+          
+          <div class="row mt-card-content">
             <div class="col text-left">
               <div >Order Number : {{order.orderNumber}}</div>
               <div >Order Type : {{order.deliveryType}}</div>
@@ -37,6 +41,11 @@
               <div >Amount : {{order.totalAmount}}</div>
               <div >payment Mode : {{order.paymentMode}}</div>
             </div>
+          </div>
+          <div>
+          <div [ngClass]="(order.orderStatus == 'PENDING' ? 'pending' : (order.orderStatus == 'ACCEPTED' ? 'accepted' : 'declined'))" class="col text-center"> 
+            Status : {{order.orderStatus}}
+          </div>
           </div>
           </mat-card>
         </div>

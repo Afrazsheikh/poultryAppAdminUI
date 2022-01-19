@@ -120,3 +120,45 @@ input:checked + .slider:before {
 .close-order-btn {
   background: red;
 }
+
+#overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(247, 241, 241, 0.8);
+  z-index: 20000;
+}
+
+.overlay-content {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(10px);
+  color: red;
+}
+
+.overlay-backdrop {
+  overflow: hidden;
+}
+
+.mat-card {
+  box-shadow: 0 0 9px rgb(0 0 0 / 10%) !important;
+  background:white;
+  padding:0 16px !important;
+  margin-bottom: 20px;
+}
+
+.mt-card-header {
+  background: #f2f2f2;
+  padding:9px 15px;
+}
+
+.mt-card-content {
+  padding:20px 0px 20px 0px !important;
+
+}
