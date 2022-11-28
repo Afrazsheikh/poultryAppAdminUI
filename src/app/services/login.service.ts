@@ -13,11 +13,15 @@ export class LoginService {
 
   login(data): Observable<any>
   {
-    return this.httpClient.post(environment.apiBaseUrl + 'adminService/adminLogin', data);
+    return this.httpClient.post(environment.apiBaseUrl + 'adminService/login', data);
   }
 
   addAdmin(data): Observable<any>
   {
-    return this.httpClient.post(environment.apiBaseUrl + 'adminService/addAdmin', data);
+    return this.httpClient.post(environment.apiBaseUrl + 'adminService/sellingListing', data);
+  }
+  resetPassword(data): Observable<any>
+  {
+    return this.httpClient.post(environment.apiBaseUrl + 'adminService/resetPassword', data);
   }
 }

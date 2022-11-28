@@ -8,20 +8,12 @@ import { navItems } from '../../_nav';
 })
 export class DefaultLayoutComponent {
   public sidebarMinimized = true;
-  //public navItems = navItems;
+  public navItems = navItems;
 
   constructor(private router: Router)
   {}
 
-  // toggleMinimize(e) {
-  //   this.sidebarMinimized = e;
-  // }
 
-  // showAdminAccMenu()
-  // {
-  //   document.getElementById('AccIcon').classList.add("show");
-  //   //document.getElementById('AccIconMenu').classList.add("show");
-  // }
 
   Logout()
   {

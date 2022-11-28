@@ -8,6 +8,7 @@ import { DashboardComponent } from './dashboard.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
+// import { GermCurrencyModule } from '../../germ.currency.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { CommonModule } from '@angular/common';
     DashboardRoutingModule,
     ChartsModule,
     BsDropdownModule,
-    ButtonsModule.forRoot()
+    ButtonsModule.forRoot(),
+    // GermCurrencyModulem
   ],
   declarations: [ DashboardComponent ]
 })

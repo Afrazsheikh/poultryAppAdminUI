@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { RegisterComponent } from './register.component';
+// import { RegisterComponent } from './register.component';
 import { FormsComponent } from './forms.component';
 import { SwitchesComponent } from './switches.component';
 import { TablesComponent } from './tables.component';
 import { TabsComponent } from './tabs.component';
-import { PasswordComponent } from './password.component';
+// import { PasswordComponent } from './password.component';
 import { CollapsesComponent } from './collapses.component';
 import { PaginationsComponent } from './paginations.component';
 import { PopoversComponent } from './popovers.component';
@@ -21,13 +21,13 @@ const routes: Routes = [
       title: 'Manage Restaurants'
     },
     children: [
-      {
-        path: 'register',
-        component: RegisterComponent,
-        data: {
-          title: 'Add Restaurant'
-        }
-      },
+      // {
+      //   path: 'register',
+      //   component: RegisterComponent,
+      //   data: {
+      //     title: 'Add Restaurant'
+      //   }
+      // },
       {
         path: 'forms',
         component: FormsComponent,
@@ -56,13 +56,13 @@ const routes: Routes = [
           title: 'Tabs'
         }
       },
-      {
-        path: 'password',
-        component: PasswordComponent,
-        data: {
-          title: 'Set-Reset Password'
-        }
-      },
+      // {
+      //   path: 'password',
+      //   component: PasswordComponent,
+      //   data: {
+      //     title: 'Set-Reset Password'
+      //   }
+      // },
       {
         path: 'collapses',
         component: CollapsesComponent,

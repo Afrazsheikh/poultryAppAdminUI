@@ -50,38 +50,7 @@ export const routes: Routes = [
         path: 'base',
         loadChildren: () => import('./views/base/base.module').then(m => m.BaseModule)
       },
-      {
-        path: 'history',
-        loadChildren: () => import('./views/history/history.module').then(m => m.HistoryModule)
-      },
-      {
-        path: 'menus',
-        loadChildren: () => import('./views/menus/menu.module').then(m => m.MenuModule)
-      },
-      {
-        path: 'settings',
-        loadChildren: () => import('./views/settings/settings.module').then(m => m.SettingsModule)
-      },
-      {
-        path: 'restaurant-details',
-        loadChildren: () => import('./views/restaurant-details/restaurant-details-module').then(m => m.RestaurantDetailsModule)
-      },
-      {
-        path: 'discount',
-        loadChildren: () => import('./views/discount/discount.module').then(m => m.DiscountModule)
-      },
-      {
-        path: 'instant-action',
-        loadChildren: () => import('./views/instant-action/instant-action.module').then(m => m.InstantActionModule)
-      },
-      {
-        path: 'order',
-        loadChildren: () => import('./views/order/order.module').then(m => m.OrderModule)
-      },
-      {
-        path: 'declined-order',
-        loadChildren: () => import('./views/declined-order/declined-order.module').then(m => m.DeclinedOrderModule)
-      },
+      //
     ]
   },
   { path: '**', component: P404Component }

@@ -23,16 +23,17 @@ export class LoginComponent
 
   login()
   {
-    
+
     this.isWaiting = false;
 
     this.loginService.login(this.loginForm.value).subscribe((response) => {
 
-      //console.log(response);
+      console.log(response);
       this.isWaiting = true;
 
-      if(response.success) {
-        localStorage.setItem('token', response.data);
+      if(response.acknowledged) {
+        localStorage.setItem('email', this.loginForm.get('email').value);
+        localStorage.setItem('token', response.token);
         this.router.navigate(['/home']);
       }
 

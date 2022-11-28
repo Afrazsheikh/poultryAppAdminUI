@@ -1,3 +1,8 @@
+<div id="overlay" *ngIf="isLoading">
+  <div class="overlay-content">
+      <div class="spinner-border"></div>
+  </div>
+</div>
 <div class="app-body">
   <div class="container">
     <div class="row">
@@ -43,8 +48,8 @@
               <th>ID</th>
               <th>Name</th>
               <th>Status</th>
-              <th>Today Accepted Order</th>
-              <th>Today Sale</th>
+              <th>Today Accepted Orders</th>
+              <th>Today Total Amount</th>
               <th>URL</th>
             </tr>
           </thead>
@@ -53,10 +58,11 @@
               <td><a style="text-decoration: underline; color: blue;" (click)="navToGraph(i)">{{rest._id}}</a></td>
               <td>{{rest.restaurantName}}</td>
               <td>{{rest.isOnline ? 'Open Today' : 'Closed'}}</td>
-              <td>0</td>
-              <td>0</td>
-              <td>{{rest.websiteURL}}</td>
-             
+              <td>{{rest.orderSummary?.acceptedOrder}}</td>
+              <td>£ {{rest.orderSummary?.totalOrderAmount}}</td>
+              <!-- <td>{{rest.orderSummary?.totalOrderAmount | number: '1.2-2' | germanCurr: rest.orderSummary?.totalOrderAmount}} €</td> -->
+              <td><a href="{{rest.websiteURL}}" [target]="'_blank'">{{rest.websiteURL}}</a></td>
+
             </tr>
           </tbody>
         </table>
@@ -64,5 +70,3 @@
     </div>
   </div>
 </div>
-
-

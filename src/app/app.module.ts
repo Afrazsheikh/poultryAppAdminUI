@@ -44,14 +44,13 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { ChartsModule } from 'ng2-charts';
 import { JwtHelperService, JWT_OPTIONS } from '@auth0/angular-jwt';
-import { SettingsComponent } from './views/settings/settings.component';
-import { RestaurantDetailsComponent } from './views/restaurant-details/restaurant-details.component';
-import { DiscountComponent } from './views/discount/discount.component';
-import { InstantActionComponent } from './views/instant-action/instant-action.component';
+// import { SettingsComponent } from './views/settings/settings.component
+// import { DiscountComponent } from './views/discount/discount.component';
+// import { InstantActionComponent } from './views/instant-action/instant-action.component';
 import { MatButtonToggle, MatButtonToggleGroup, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatButtonModule } from '@angular/material/button';
 import { OrderComponent } from './views/order/order.component';
-import { DeclinedOrderComponent } from './views/declined-order/declined-order.component';
+// import { DeclinedOrderComponent } from './views/declined-order/declined-order.component';
 import { FormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
@@ -61,6 +60,13 @@ import { MatDivider, MatDividerModule } from '@angular/material/divider';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule, MatRippleModule} from '@angular/material/core';
 import {MatInputModule} from '@angular/material/input';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
+
+import {MatIconModule} from '@angular/material/icon';
+
+
+
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -97,7 +103,11 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     MatDatepickerModule,
     MatNativeDateModule,
     MatInputModule,
-
+    MatSlideToggleModule,
+    Ng2SearchPipeModule,
+    MatIconModule,
+  
+  
   ],
   declarations: [
     AppComponent,
@@ -105,12 +115,11 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     P404Component,
     P500Component,
     LoginComponent,
-    SettingsComponent,
-    RestaurantDetailsComponent,
-    DiscountComponent,
-    InstantActionComponent,
+  
     OrderComponent,
-    DeclinedOrderComponent
+  
+ 
+  
     ],
   providers: [
     {

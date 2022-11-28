@@ -1,7 +1,7 @@
 import { AfterViewChecked, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { CalendarOptions, FullCalendarComponent } from '@fullcalendar/angular';
 import { Calendar } from '@fullcalendar/core';
-import { RestaurantService } from '../../services/restaurant.service';
+// import { RestaurantService } from '../../services/restaurant.service';
 import { Router, NavigationExtras } from '@angular/router';
 import * as moment from 'moment';
 
@@ -28,9 +28,9 @@ export class OrderComponent implements OnInit, AfterViewChecked {
   segmantCheck: any = true;
   isLoading: boolean = false;
 
-  constructor(private restaurantService: RestaurantService,private router: Router) {
+  constructor(private router: Router) {
 
-    this.getOrders();
+    // this.getOrders();
 
 
    }
@@ -54,44 +54,44 @@ export class OrderComponent implements OnInit, AfterViewChecked {
     }
   }
 
-  getOrders(){
-    this.isLoading = true;
-    this.activeSegment = 'Today';
-    this.restaurantService.getOrders(this.restId, this.selectedDate).subscribe((response) => {
-      console.log(response);
-      this.isLoading = false
-      if(response.success) {
-        this.ordersData = response.data;
-        this.selectedDate = null;
-        console.log(response);
-      }
+  // getOrders(){
+  //   this.isLoading = true;
+  //   this.activeSegment = 'Today';
+  //   this.restaurantService.getOrders(this.restId, this.selectedDate).subscribe((response) => {
+  //     console.log(response);
+  //     this.isLoading = false
+  //     if(response.success) {
+  //       this.ordersData = response.data;
+  //       this.selectedDate = null;
+  //       console.log(response);
+  //     }
 
-     },
-     (err) => {
-      console.log(err);
-    })
-  }
+  //    },
+  //    (err) => {
+  //     console.log(err);
+  //   })
+  // }
 
-  getOrderHistory(){
-    this.isLoading = true;
-    this.activeSegment = 'History';
-    this.restaurantService.getOrderHistory(this.restId).subscribe((response) => {
-      console.log(response);
-      this.isLoading = false;
-      if(response.success) {
-        this.data = response.data;
-        this.segmantCheck = false;
-        console.log(this.data);
+  // getOrderHistory(){
+  //   this.isLoading = true;
+  //   this.activeSegment = 'History';
+  //   this.restaurantService.getOrderHistory(this.restId).subscribe((response) => {
+  //     console.log(response);
+  //     this.isLoading = false;
+  //     if(response.success) {
+  //       this.data = response.data;
+  //       this.segmantCheck = false;
+  //       console.log(this.data);
 
-        this.mapCalendarDates(this.data);
-      }
+  //       this.mapCalendarDates(this.data);
+  //     }
 
-     },
-     (err) => {
-      console.log(err);
-    })
+  //    },
+  //    (err) => {
+  //     console.log(err);
+  //   })
 
-  }
+  // }
 
   setCalenderView(event){
     console.log(event.value);
@@ -112,7 +112,7 @@ export class OrderComponent implements OnInit, AfterViewChecked {
   this.selectedDate = event.dateStr;
   this.activeSegment = 'Today';
   this.displayDate = 'Selected (' + this.selectedDate + ')';
-  this.getOrders();
+  // this.getOrders();
  }
 
  mapCalendarDates(data)

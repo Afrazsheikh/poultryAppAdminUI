@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 
-import { RegisterComponent } from './register.component';
+// import { RegisterComponent } from './register.component';
 
 // Forms Component
 import { FormsComponent } from './forms.component';
@@ -17,7 +17,7 @@ import { TabsComponent } from './tabs.component';
 
 // Carousel Component
 import { CarouselModule } from 'ngx-bootstrap/carousel';
-import { PasswordComponent } from './password.component';
+// import { PasswordComponent } from './password.component';
 
 // Collapse Component
 import { CollapseModule } from 'ngx-bootstrap/collapse';
@@ -69,12 +69,12 @@ import { MatStepperModule } from '@angular/material/stepper';
     MatStepperModule
   ],
   declarations: [
-    RegisterComponent,
+    // RegisterComponent,
     FormsComponent,
     SwitchesComponent,
     TablesComponent,
     TabsComponent,
-    PasswordComponent,
+    // PasswordComponent,
     CollapsesComponent,
     PaginationsComponent,
     PopoversComponent,

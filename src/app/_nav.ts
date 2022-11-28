@@ -1,4 +1,7 @@
 import { INavData } from '@coreui/angular';
+import { Dashboard } from '@mui/icons-material';
+import { } from '../app/views/dashboard/dashboard.component'
+
 
 export const navItems: INavData[] = [
   {
@@ -6,34 +9,9 @@ export const navItems: INavData[] = [
     url: '/home',
     icon: 'icon-speedometer',
   },
+
   {
-    name: 'Manage Restaurants',
-    icon: 'icon-pencil',
-    children: [
-      {
-        name: 'Add Restaurant',
-        url: '/home/base/register',
-        icon: 'icon-home'
-      },
-      {
-        name: 'Set Password',
-        url: '/home/base/password',
-        icon: 'icon-key'
-      },
-      /*{
-        name: 'Menu',
-        url: '/home/base/collapses',
-        icon: 'icon-options-vertical'
-      },*/
-      {
-        name: 'Settings',
-        url: '/home/base/forms',
-        icon: 'icon-settings'
-      }
-    ]
-  },
-  {
-    name: 'Order & History',
+    name: 'Account List',
     url: '/home/history',
     icon: 'icon-clock'
   },
